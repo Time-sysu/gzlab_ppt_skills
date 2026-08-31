@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="coverWave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0070C0"/>
+      <stop offset="0.72" stop-color="#2E75B6"/>
+      <stop offset="1" stop-color="#4472C4"/>
+    </linearGradient>
+  </defs>
+  <g id="background-cover">
+    <rect x="0" y="0" width="1280" height="720" fill="#0070C0"/>
+    <image href="cover_bg.jpg" x="0" y="0" width="1280" height="474" preserveAspectRatio="xMidYMid slice"/>
+    <path d="M0 382 C170 448 322 344 486 378 C648 412 764 368 938 390 C1082 408 1180 420 1280 405 L1280 530 L0 530 Z" fill="#FFFFFF" fill-opacity="0.28"/>
+    <path d="M0 414 C190 470 330 392 490 420 C670 452 790 398 950 418 C1090 436 1190 445 1280 430 L1280 720 L0 720 Z" fill="url(#coverWave)"/>
+  </g>
+  <g id="cover-title">
+    <text x="640" y="505" text-anchor="middle" font-family="&quot;Microsoft YaHei&quot;, &quot;微软雅黑&quot;, sans-serif" font-size="44" font-weight="bold" fill="#FFFFFF">{{TITLE}}</text>
+    <text x="640" y="552" text-anchor="middle" font-family="&quot;Microsoft YaHei&quot;, &quot;微软雅黑&quot;, sans-serif" font-size="24" fill="#EAF3FA">{{SUBTITLE}}</text>
+  </g>
+  <g id="cover-meta">
+    <text x="640" y="615" text-anchor="middle" font-family="&quot;Microsoft YaHei&quot;, &quot;微软雅黑&quot;, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF">{{AUTHOR}}</text>
+    <text x="640" y="659" text-anchor="middle" font-family="&quot;Times New Roman&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="24" fill="#FFFFFF">{{DATE}}</text>
+  </g>
+  <g id="logo-cover">
+    <image href="brand_logo.png" x="1005" y="14" width="246" height="68" preserveAspectRatio="xMidYMid meet"/>
+    <text x="1128" y="102" text-anchor="middle" font-family="Arial, &quot;Microsoft YaHei&quot;, sans-serif" font-size="1" fill="#FFFFFF" fill-opacity="0">{{BRAND_LOGO}}</text>
+  </g>
+</svg>

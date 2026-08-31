@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#92D050"/><stop offset="1" stop-color="#2E75B6"/></linearGradient>
+  </defs>
+  <g id="background"><rect width="1280" height="720" fill="#FFFFFF"/><rect x="0" y="0" width="997" height="79" fill="#2E75B6"/><rect x="0" y="0" width="80" height="32" fill="url(#brandGrad)"/></g>
+  <g id="logo"><image href="brand_logo.png" x="1005" y="6" width="246" height="68" preserveAspectRatio="xMidYMid meet"/></g>
+  <g id="chapter-number">
+    <text x="640" y="270" text-anchor="middle" font-family="&quot;Times New Roman&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="124" font-weight="bold" fill="#0070C0">{{CHAPTER_NUM}}</text>
+    <rect x="510" y="302" width="260" height="8" rx="4" fill="url(#brandGrad)"/>
+  </g>
+  <g id="chapter-title">
+    <text x="640" y="394" text-anchor="middle" font-family="&quot;Microsoft YaHei&quot;, sans-serif" font-size="44" font-weight="bold" fill="#2E75B6">{{CHAPTER_TITLE}}</text>
+    <text x="640" y="445" text-anchor="middle" font-family="&quot;Microsoft YaHei&quot;, sans-serif" font-size="22" fill="#64748B">{{CHAPTER_DESC}}</text>
+  </g>
+  <g id="decorations"><polygon points="238,360 264,386 238,412 250,386" fill="#8FAADC"/><polygon points="1016,360 1042,386 1016,412 1028,386" fill="#4472C4"/></g>
+</svg>

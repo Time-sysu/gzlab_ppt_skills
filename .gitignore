@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+projects/
+exports/
+backup/
+**/__pycache__/
+*.py[cod]
+*.log
+.confirm_ui.lock
+.live_preview.lock
+confirm_ui/result.json

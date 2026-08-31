@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <g id="background-ending">
+    <rect x="0" y="0" width="1280" height="720" fill="#EAF3FA"/>
+    <image href="ending_bg.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="xMidYMid slice"/>
+  </g>
+  <g id="ending-panel">
+    <polygon points="535,0 854,0 327,720 7,720" fill="#0070C0" fill-opacity="0.66" stroke="#FFFFFF" stroke-width="6"/>
+    <text x="552" y="340" text-anchor="end" font-family="&quot;Microsoft YaHei&quot;, &quot;微软雅黑&quot;, sans-serif" font-size="72" font-weight="bold" fill="#FFFFFF">{{THANK_YOU}}</text>
+    <text x="514" y="402" text-anchor="end" font-family="&quot;Microsoft YaHei&quot;, &quot;微软雅黑&quot;, sans-serif" font-size="24" fill="#FFFFFF">{{ENDING_SUBTITLE}}</text>
+  </g>
+  <g id="contact-info">
+    <rect x="80" y="530" width="390" height="108" rx="14" fill="#005A9C" fill-opacity="0.74"/>
+    <text x="275" y="576" text-anchor="middle" font-family="&quot;Microsoft YaHei&quot;, &quot;微软雅黑&quot;, sans-serif" font-size="32" fill="#FFFFFF">广州实验室</text>
+    <text x="275" y="613" text-anchor="middle" font-family="&quot;Microsoft YaHei&quot;, &quot;微软雅黑&quot;, sans-serif" font-size="18" fill="#FFFFFF">{{CONTACT_INFO}}</text>
+  </g>
+  <g id="footer"><text x="1238" y="690" text-anchor="end" font-family="&quot;Times New Roman&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="18" fill="#FFFFFF">{{PAGE_NUM}}</text></g>
+</svg>

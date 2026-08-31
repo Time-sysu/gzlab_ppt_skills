@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#92D050"/><stop offset="1" stop-color="#2E75B6"/></linearGradient>
+  </defs>
+  <g id="background"><rect width="1280" height="720" fill="#FFFFFF"/></g>
+  <g id="header">
+    <rect x="0" y="0" width="997" height="79" fill="#2E75B6"/>
+    <rect x="0" y="0" width="80" height="32" fill="url(#brandGrad)"/>
+    <text x="88" y="52" font-family="&quot;Microsoft YaHei&quot;, sans-serif" font-size="36" font-weight="bold" fill="#FFFFFF">目录</text>
+    <image href="brand_logo.png" x="1005" y="6" width="246" height="68" preserveAspectRatio="xMidYMid meet"/>
+  </g>
+  <g id="toc-item-1">
+    <text x="110" y="208" text-anchor="middle" font-family="&quot;Times New Roman&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="48" font-weight="bold" fill="#0070C0">01</text>
+    <polygon points="184,184 210,208 184,232 196,208" fill="#4472C4"/>
+    <text x="258" y="203" font-family="&quot;Microsoft YaHei&quot;, sans-serif" font-size="32" font-weight="bold" fill="#0070C0">{{TOC_ITEM_1_TITLE}}</text>
+    <text x="258" y="240" font-family="&quot;Microsoft YaHei&quot;, sans-serif" font-size="20" fill="#2E75B6">{{TOC_ITEM_1_DESC}}</text>
+  </g>
+  <g id="toc-item-2">
+    <text x="110" y="365" text-anchor="middle" font-family="&quot;Times New Roman&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="48" font-weight="bold" fill="#0070C0">02</text>
+    <polygon points="184,341 210,365 184,389 196,365" fill="#4472C4"/>
+    <text x="258" y="360" font-family="&quot;Microsoft YaHei&quot;, sans-serif" font-size="32" font-weight="bold" fill="#0070C0">{{TOC_ITEM_2_TITLE}}</text>
+    <text x="258" y="397" font-family="&quot;Microsoft YaHei&quot;, sans-serif" font-size="20" fill="#2E75B6">{{TOC_ITEM_2_DESC}}</text>
+  </g>
+  <g id="toc-item-3">
+    <text x="110" y="522" text-anchor="middle" font-family="&quot;Times New Roman&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="48" font-weight="bold" fill="#0070C0">03</text>
+    <polygon points="184,498 210,522 184,546 196,522" fill="#4472C4"/>
+    <text x="258" y="517" font-family="&quot;Microsoft YaHei&quot;, sans-serif" font-size="32" font-weight="bold" fill="#0070C0">{{TOC_ITEM_3_TITLE}}</text>
+    <text x="258" y="554" font-family="&quot;Microsoft YaHei&quot;, sans-serif" font-size="20" fill="#2E75B6">{{TOC_ITEM_3_DESC}}</text>
+  </g>
+</svg>
