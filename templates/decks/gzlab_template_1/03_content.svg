@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="header" font-family="Microsoft YaHei, Arial"><text x="82" y="48" font-size="32" font-weight="bold" fill="#0443AE">{{PAGE_TITLE}}</text></g>
+  <g id="content" font-family="Microsoft YaHei, Arial">
+    <rect x="38" y="114" width="1204" height="542" rx="8" fill="#FFFFFF" fill-opacity="0.65" stroke="#7DACFC" stroke-dasharray="8 6"/>
+    <text x="640" y="371" text-anchor="middle" font-size="30" fill="#4472C4">{{CONTENT_AREA}}</text>
+    <text x="640" y="416" text-anchor="middle" font-size="22" fill="#808080">替换为本页核心结论、图表或真实素材</text>
+  </g>
+  <g id="footer"><text x="1236" y="706" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

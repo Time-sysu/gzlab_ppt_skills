@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：六节点时间线及对应真实图片；每节点一句，数据与日期需核实。</desc>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="header"><text x="82" y="48" font-family="Microsoft YaHei, Arial" font-size="32" font-weight="bold" fill="#0443AE">{{PAGE_TITLE}}</text></g>
+  <g id="message" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <text x="640" y="160" font-size="36" font-weight="bold" fill="#0443AE">{{KEY_MESSAGE}}</text>
+    <text x="640" y="217" font-size="24" fill="#333F50">{{CONTEXT_LINE}}</text>
+  </g>
+  <g id="timeline-rail"><line x1="70" y1="353" x2="1210" y2="353" stroke="#0443AE" stroke-width="5"/><polygon points="1210,344 1227,353 1210,362" fill="#0443AE"/></g>
+  <g id="timeline-nodes" font-family="Microsoft YaHei, Arial" text-anchor="middle" font-size="20" fill="#333F50">
+    <circle cx="134" cy="353" r="11" fill="#0443AE"/><text x="134" y="317">{{STEP_1}}</text><text x="134" y="387">{{DATE_1}}</text>
+    <rect x="47" y="408" width="174" height="116" fill="#EAF2FB" stroke="#7DACFC"/><text x="134" y="472">{{IMAGE_1}}</text>
+    <circle cx="336" cy="353" r="11" fill="#0443AE"/><text x="336" y="317">{{STEP_2}}</text><text x="336" y="387">{{DATE_2}}</text>
+    <rect x="249" y="408" width="174" height="116" fill="#EAF2FB" stroke="#7DACFC"/><text x="336" y="472">{{IMAGE_2}}</text>
+    <circle cx="538" cy="353" r="11" fill="#0443AE"/><text x="538" y="317">{{STEP_3}}</text><text x="538" y="387">{{DATE_3}}</text>
+    <rect x="451" y="408" width="174" height="116" fill="#EAF2FB" stroke="#7DACFC"/><text x="538" y="472">{{IMAGE_3}}</text>
+    <circle cx="740" cy="353" r="11" fill="#0443AE"/><text x="740" y="317">{{STEP_4}}</text><text x="740" y="387">{{DATE_4}}</text>
+    <rect x="653" y="408" width="174" height="116" fill="#EAF2FB" stroke="#7DACFC"/><text x="740" y="472">{{IMAGE_4}}</text>
+    <circle cx="942" cy="353" r="11" fill="#0443AE"/><text x="942" y="317">{{STEP_5}}</text><text x="942" y="387">{{DATE_5}}</text>
+    <rect x="855" y="408" width="174" height="116" fill="#EAF2FB" stroke="#7DACFC"/><text x="942" y="472">{{IMAGE_5}}</text>
+    <circle cx="1144" cy="353" r="11" fill="#00B050"/><text x="1144" y="317">{{STEP_6}}</text><text x="1144" y="387">{{DATE_6}}</text>
+    <rect x="1057" y="408" width="174" height="116" fill="#EAF2FB" stroke="#7DACFC"/><text x="1144" y="472">{{IMAGE_6}}</text>
+  </g>
+  <g id="takeaway"><rect x="47" y="611" width="1184" height="61" rx="9" fill="#0443AE"/><text x="640" y="651" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="30" font-weight="bold" fill="#FFFFFF">{{TAKEAWAY}}</text></g>
+  <g id="footer"><text x="1245" y="706" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

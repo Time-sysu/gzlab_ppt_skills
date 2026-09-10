@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：五阶段演进及两组图文证据；保留箭头、双面板和底部总结结构。</desc>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="header"><text x="82" y="48" font-family="Microsoft YaHei, Arial" font-size="32" font-weight="bold" fill="#0443AE">{{PAGE_TITLE}}</text></g>
+  <g id="evolution" font-family="Microsoft YaHei, Arial" text-anchor="middle" font-size="24">
+    <polygon points="67,147 1197,147 1197,132 1241,169 1197,206 1197,190 67,190" fill="#0443AE"/>
+    <text x="640" y="178" fill="#FFFFFF">{{EVOLUTION_DIRECTION}}</text>
+    <rect x="65" y="216" width="218" height="47" rx="7" fill="#FFFFFF" stroke="#7DACFC"/><text x="174" y="247" fill="#0443AE">{{STAGE_1}}</text>
+    <rect x="297" y="216" width="218" height="47" rx="7" fill="#FFFFFF" stroke="#7DACFC"/><text x="406" y="247" fill="#0443AE">{{STAGE_2}}</text>
+    <rect x="529" y="216" width="218" height="47" rx="7" fill="#FFFFFF" stroke="#7DACFC"/><text x="638" y="247" fill="#0443AE">{{STAGE_3}}</text>
+    <rect x="761" y="216" width="218" height="47" rx="7" fill="#FFFFFF" stroke="#7DACFC"/><text x="870" y="247" fill="#0443AE">{{STAGE_4}}</text>
+    <rect x="993" y="216" width="218" height="47" rx="7" fill="#FFFFFF" stroke="#7DACFC"/><text x="1102" y="247" fill="#0443AE">{{STAGE_5}}</text>
+  </g>
+  <g id="evidence" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="40" y="286" width="541" height="333" rx="10" fill="#FFFFFF" stroke="#4472C4"/><text x="310" y="328" font-size="28" font-weight="bold" fill="#0443AE">{{LEFT_TITLE}}</text>
+    <rect x="62" y="350" width="497" height="202" fill="#EAF2FB" stroke="#7DACFC"/><text x="310" y="458" font-size="26" fill="#4472C4">{{LEFT_IMAGE}}</text><text x="310" y="593" font-size="22" fill="#333F50">{{LEFT_CAPTION}}</text>
+    <rect x="610" y="286" width="632" height="333" rx="10" fill="#FFFFFF" stroke="#4472C4"/><text x="926" y="328" font-size="28" font-weight="bold" fill="#0443AE">{{RIGHT_TITLE}}</text>
+    <rect x="632" y="350" width="588" height="202" fill="#EAF2FB" stroke="#7DACFC"/><text x="926" y="458" font-size="26" fill="#4472C4">{{RIGHT_IMAGE}}</text><text x="926" y="593" font-size="22" fill="#333F50">{{RIGHT_CAPTION}}</text>
+  </g>
+  <g id="takeaway"><rect x="40" y="642" width="1202" height="49" rx="8" fill="#0443AE"/><text x="640" y="676" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="28" font-weight="bold" fill="#FFFFFF">{{TAKEAWAY}}</text></g>
+  <g id="footer"><text x="1260" y="712" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

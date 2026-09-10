@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：上方介绍与下方三张图片；移除所有图位提示并填写变量。</desc>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="header"><text x="82" y="48" font-family="Microsoft YaHei, Arial" font-size="32" font-weight="bold" fill="#0443AE">{{PAGE_TITLE}}</text></g>
+  <g id="intro" font-family="Microsoft YaHei, Arial">
+    <rect x="20" y="145" width="1240" height="258" rx="12" fill="#FFFFFF" stroke="#0443AE" stroke-width="2"/>
+    <rect x="56" y="111" width="196" height="73" rx="8" fill="#0443AE"/>
+    <text x="154" y="155" text-anchor="middle" font-size="24" fill="#FFFFFF">{{SECTION}}</text>
+    <text x="285" y="208" font-size="30" font-weight="bold" fill="#0443AE">{{KEY_MESSAGE}}</text>
+    <text x="56" y="267" font-size="24" fill="#333F50">{{INTRO_LINE_1}}</text>
+    <text x="56" y="314" font-size="24" fill="#333F50">{{INTRO_LINE_2}}</text>
+    <text x="56" y="361" font-size="24" fill="#333F50">{{INTRO_LINE_3}}</text>
+  </g>
+  <g id="photos" font-family="Microsoft YaHei, Arial" text-anchor="middle" font-size="24" fill="#4472C4">
+    <rect x="20" y="436" width="400" height="226" fill="#EAF2FB" stroke="#7DACFC"/>
+    <text x="220" y="549">{{IMAGE_1}}</text><text x="220" y="690" font-size="20" fill="#333F50">{{CAPTION_1}}</text>
+    <rect x="440" y="436" width="400" height="226" fill="#EAF2FB" stroke="#7DACFC"/>
+    <text x="640" y="549">{{IMAGE_2}}</text><text x="640" y="690" font-size="20" fill="#333F50">{{CAPTION_2}}</text>
+    <rect x="860" y="436" width="400" height="226" fill="#EAF2FB" stroke="#7DACFC"/>
+    <text x="1060" y="549">{{IMAGE_3}}</text><text x="1060" y="690" font-size="20" fill="#333F50">{{CAPTION_3}}</text>
+  </g>
+  <g id="footer"><text x="1260" y="712" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

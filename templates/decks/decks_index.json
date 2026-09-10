@@ -5,6 +5,18 @@
     "page_count": 10,
     "primary_color": "#0070C0"
   },
+  "gzlab_template_1": {
+    "summary": "模板1：广州实验室浅蓝点阵背景、蓝绿品牌色，适合科研申报、平台建设与综合进展汇报。",
+    "canvas_format": "ppt169",
+    "page_count": 14,
+    "primary_color": "#0443AE"
+  },
+  "gzlab_template_2": {
+    "summary": "模板2：广州实验室建筑封面、蓝绿强调、大图成果卡片与技术对比，适合领导汇报和成果展示。",
+    "canvas_format": "ppt169",
+    "page_count": 7,
+    "primary_color": "#006EBD"
+  },
   "中国电信": {
     "summary": "China Telecom related briefings, 政企数字化方案, 转型规划, 内部汇报.",
     "canvas_format": "ppt169",

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs><linearGradient id="arrow-brand" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0" stop-color="#808080"/><stop offset="0.3" stop-color="#00A871"/><stop offset="0.66" stop-color="#006EBD"/></linearGradient></defs>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="none"/></g>
+  <g id="header">
+    <polygon points="41.83,31.28 90.28,31.28 101.03,49.15 90.28,67.02 41.83,67.02" fill="url(#arrow-brand)"/>
+    <text x="114.53" y="62.4" font-family="Microsoft YaHei, Arial" font-size="42.67" font-weight="bold" fill="#17191C">{{PAGE_TITLE}}</text>
+    <svg x="1098.31" y="10.82" width="181.66" height="75.06" viewBox="0 0.08826 1 0.91174" preserveAspectRatio="none"><image href="brand_logo.png" x="0" y="0" width="1" height="1" preserveAspectRatio="none"/></svg>
+  </g>
+  <g id="content" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="36" y="112" width="1208" height="550" rx="10" fill="#FFFFFF" stroke="#E3E6EA" stroke-dasharray="8 6"/>
+    <text x="640" y="371" font-size="30" fill="#006EBD">{{CONTENT_AREA}}</text><text x="640" y="418" font-size="22" fill="#6B7280">替换为本页核心结论、图表或真实素材</text>
+  </g>
+  <g id="footer"><text x="1248" y="710" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#6B7280">{{PAGE_NUM}}</text></g>
+</svg>

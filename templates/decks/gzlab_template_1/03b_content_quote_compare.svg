@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：上部核心依据与证据图，下部两组对照；引述必须有可核实来源。</desc>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="header"><text x="82" y="48" font-family="Microsoft YaHei, Arial" font-size="32" font-weight="bold" fill="#0443AE">{{PAGE_TITLE}}</text></g>
+  <g id="evidence" font-family="Microsoft YaHei, Arial">
+    <rect x="37" y="120" width="1212" height="251" rx="10" fill="#FFFFFF" stroke="#4472C4" stroke-width="2"/>
+    <text x="63" y="170" font-size="30" font-weight="bold" fill="#0443AE">{{KEY_EVIDENCE}}</text>
+    <text x="63" y="225" font-size="24" fill="#333F50">{{QUOTE_LINE_1}}</text>
+    <text x="63" y="268" font-size="24" fill="#333F50">{{QUOTE_LINE_2}}</text>
+    <text x="63" y="333" font-size="18" fill="#808080">{{SOURCE}}</text>
+    <rect x="863" y="143" width="363" height="205" fill="#EAF2FB" stroke="#7DACFC"/>
+    <text x="1045" y="252" font-size="24" text-anchor="middle" fill="#4472C4">{{EVIDENCE_IMAGE}}</text>
+  </g>
+  <g id="compare-left" font-family="Microsoft YaHei, Arial">
+    <rect x="37" y="390" width="601" height="269" rx="8" fill="#FFFFFF" stroke="#7DACFC"/>
+    <rect x="37" y="390" width="601" height="48" fill="#0443AE"/>
+    <text x="337" y="423" font-size="26" text-anchor="middle" fill="#FFFFFF">{{LEFT_TITLE}}</text>
+    <text x="66" y="491" font-size="24" fill="#333F50">{{LEFT_POINT_1}}</text>
+    <text x="66" y="544" font-size="24" fill="#333F50">{{LEFT_POINT_2}}</text>
+    <text x="66" y="610" font-size="28" font-weight="bold" fill="#0443AE">{{LEFT_CONCLUSION}}</text>
+  </g>
+  <g id="compare-right" font-family="Microsoft YaHei, Arial">
+    <rect x="655" y="390" width="594" height="269" rx="8" fill="#FFFFFF" stroke="#7DACFC"/>
+    <rect x="655" y="390" width="594" height="48" fill="#4472C4"/>
+    <text x="952" y="423" font-size="26" text-anchor="middle" fill="#FFFFFF">{{RIGHT_TITLE}}</text>
+    <text x="684" y="491" font-size="24" fill="#333F50">{{RIGHT_POINT_1}}</text>
+    <text x="684" y="544" font-size="24" fill="#333F50">{{RIGHT_POINT_2}}</text>
+    <text x="684" y="610" font-size="28" font-weight="bold" fill="#0443AE">{{RIGHT_CONCLUSION}}</text>
+  </g>
+  <g id="footer"><text x="1245" y="706" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

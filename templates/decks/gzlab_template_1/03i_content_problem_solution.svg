@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：左侧问题归纳，右侧大图与解决方案；每栏只表达一个核心判断。</desc>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="header"><text x="82" y="48" font-family="Microsoft YaHei, Arial" font-size="32" font-weight="bold" fill="#0443AE">{{PAGE_TITLE}}</text></g>
+  <g id="problem" font-family="Microsoft YaHei, Arial">
+    <rect x="34" y="137" width="578" height="520" rx="10" fill="#FFFFFF" stroke="#7DACFC" stroke-width="2"/>
+    <rect x="62" y="119" width="302" height="43" fill="#FFFFFF"/><text x="76" y="152" font-size="30" font-weight="bold" fill="#0443AE">{{PROBLEM_TITLE}}</text>
+    <circle cx="72" cy="237" r="6" fill="#0443AE"/><text x="95" y="246" font-size="24" fill="#333F50">{{PROBLEM_1}}</text>
+    <circle cx="72" cy="334" r="6" fill="#0443AE"/><text x="95" y="343" font-size="24" fill="#333F50">{{PROBLEM_2}}</text>
+    <circle cx="72" cy="431" r="6" fill="#0443AE"/><text x="95" y="440" font-size="24" fill="#333F50">{{PROBLEM_3}}</text>
+    <text x="76" y="571" font-size="28" font-weight="bold" fill="#C04F15">{{CORE_BOTTLENECK}}</text>
+  </g>
+  <g id="solution" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="628" y="137" width="620" height="520" rx="10" fill="#FFFFFF" stroke="#7DACFC" stroke-width="2"/>
+    <rect x="654" y="166" width="568" height="263" fill="#EAF2FB" stroke="#7DACFC"/><text x="938" y="305" font-size="26" fill="#4472C4">{{SOLUTION_IMAGE}}</text>
+    <text x="938" y="488" font-size="30" font-weight="bold" fill="#0443AE">{{SOLUTION_TITLE}}</text>
+    <text x="938" y="541" font-size="24" fill="#333F50">{{SOLUTION_LINE}}</text>
+    <text x="938" y="610" font-size="28" font-weight="bold" fill="#00B050">{{EXPECTED_VALUE}}</text>
+  </g>
+  <g id="footer"><text x="1245" y="706" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：从左到右四阶段图文流程；名称对应样本、处理、数据、装备或新主题的真实阶段。</desc>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="header"><text x="82" y="48" font-family="Microsoft YaHei, Arial" font-size="32" font-weight="bold" fill="#0443AE">{{PAGE_TITLE}}</text></g>
+  <g id="flow-connectors" fill="#0443AE">
+    <polygon points="299,325 319,325 319,315 339,340 319,365 319,355 299,355"/>
+    <polygon points="615,325 635,325 635,315 655,340 635,365 635,355 615,355"/>
+    <polygon points="931,325 951,325 951,315 971,340 951,365 951,355 931,355"/>
+  </g>
+  <g id="stages" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <text x="161" y="156" font-size="28" font-weight="bold" fill="#0443AE">{{STAGE_1}}</text><rect x="34" y="202" width="254" height="265" fill="#EAF2FB" stroke="#7DACFC"/><text x="161" y="342" font-size="24" fill="#4472C4">{{IMAGE_1}}</text><text x="161" y="516" font-size="22" fill="#333F50">{{ACTION_1}}</text>
+    <text x="477" y="156" font-size="28" font-weight="bold" fill="#0443AE">{{STAGE_2}}</text><rect x="350" y="202" width="254" height="265" fill="#EAF2FB" stroke="#7DACFC"/><text x="477" y="342" font-size="24" fill="#4472C4">{{IMAGE_2}}</text><text x="477" y="516" font-size="22" fill="#333F50">{{ACTION_2}}</text>
+    <text x="793" y="156" font-size="28" font-weight="bold" fill="#0443AE">{{STAGE_3}}</text><rect x="666" y="202" width="254" height="265" fill="#EAF2FB" stroke="#7DACFC"/><text x="793" y="342" font-size="24" fill="#4472C4">{{IMAGE_3}}</text><text x="793" y="516" font-size="22" fill="#333F50">{{ACTION_3}}</text>
+    <text x="1109" y="156" font-size="28" font-weight="bold" fill="#0443AE">{{STAGE_4}}</text><rect x="982" y="202" width="254" height="265" fill="#EAF2FB" stroke="#7DACFC"/><text x="1109" y="342" font-size="24" fill="#4472C4">{{IMAGE_4}}</text><text x="1109" y="516" font-size="22" fill="#333F50">{{ACTION_4}}</text>
+  </g>
+  <g id="takeaway"><rect x="34" y="604" width="1202" height="79" rx="8" fill="#0443AE"/><text x="640" y="654" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="30" font-weight="bold" fill="#FFFFFF">{{TAKEAWAY}}</text></g>
+  <g id="footer"><text x="1260" y="712" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

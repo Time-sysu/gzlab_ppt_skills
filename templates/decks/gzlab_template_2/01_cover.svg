@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <g id="bg"><image href="cover_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="cover-title" font-family="Microsoft YaHei, Arial" text-anchor="middle" fill="#FFFFFF">
+    <text x="641" y="324" font-size="72" font-weight="bold">{{TITLE}}</text>
+    <text x="641" y="394" font-size="30">{{SUBTITLE}}</text>
+  </g>
+  <g id="cover-meta" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <text x="652" y="509" font-size="27" fill="#FFFFFF">{{AUTHOR}}</text>
+    <text x="652" y="566" font-size="27" fill="#17191C">{{DATE}}</text>
+  </g>
+</svg>

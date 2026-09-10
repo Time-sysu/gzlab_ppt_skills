@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：上方证据图、两项指标及转化路径，下方四项成果图片。所有成果和指标必须有新主题的来源。</desc>
+  <defs><linearGradient id="arrow-brand" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0" stop-color="#808080"/><stop offset="0.3" stop-color="#00A871"/><stop offset="0.66" stop-color="#006EBD"/></linearGradient></defs>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="none"/></g>
+  <g id="header"><polygon points="41.83,31.28 90.28,31.28 101.03,49.15 90.28,67.02 41.83,67.02" fill="url(#arrow-brand)"/><text x="114.53" y="62.4" font-family="Microsoft YaHei, Arial" font-size="42.67" font-weight="bold" fill="#17191C">{{PAGE_TITLE}}</text><svg x="1098.31" y="10.82" width="181.66" height="75.06" viewBox="0 0.08826 1 0.91174" preserveAspectRatio="none"><image href="brand_logo.png" x="0" y="0" width="1" height="1" preserveAspectRatio="none"/></svg></g>
+  <g id="evidence" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="28" y="97" width="605" height="327" rx="8" fill="#FFFFFF" stroke="#E3E6EA"/>
+    <text x="330" y="135" font-size="28" font-weight="bold" fill="#17191C">{{EVIDENCE_TITLE}}</text>
+    <rect x="49" y="155" width="563" height="205" fill="#EFF5FB"/><text x="330" y="265" font-size="26" fill="#006EBD">{{EVIDENCE_IMAGE}}</text>
+    <text x="330" y="400" font-size="21" fill="#6B7280">{{EVIDENCE_CAPTION}}</text>
+  </g>
+  <g id="impact" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="644" y="97" width="604" height="327" rx="8" fill="#FFFFFF" stroke="#E3E6EA"/>
+    <text x="946" y="135" font-size="28" font-weight="bold" fill="#17191C">{{IMPACT_TITLE}}</text>
+    <text x="791" y="193" font-size="34" font-weight="bold" fill="#00A871">{{METRIC_1}}</text><text x="791" y="225" font-size="20" fill="#6B7280">{{LABEL_1}}</text>
+    <text x="1091" y="193" font-size="34" font-weight="bold" fill="#006EBD">{{METRIC_2}}</text><text x="1091" y="225" font-size="20" fill="#6B7280">{{LABEL_2}}</text>
+    <rect x="683" y="255" width="222" height="91" rx="9" fill="#EFF5FB"/><text x="794" y="309" font-size="22" fill="#006EBD">{{TRANSFER_FROM}}</text>
+    <polygon points="920,292 947,292 947,280 972,300 947,320 947,308 920,308" fill="#00A871"/>
+    <rect x="987" y="255" width="222" height="91" rx="9" fill="#EFF5FB"/><text x="1098" y="309" font-size="22" fill="#00754D">{{TRANSFER_TO}}</text>
+    <text x="946" y="397" font-size="24" font-weight="bold" fill="#17191C">{{IMPACT_CONCLUSION}}</text>
+  </g>
+  <g id="results" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="28" y="436" width="1220" height="261" rx="8" fill="#FFFFFF" stroke="#E3E6EA"/>
+    <text x="640" y="475" font-size="28" font-weight="bold" fill="#17191C">{{RESULTS_TITLE}}</text>
+    <rect x="48" y="491" width="276" height="143" fill="#EFF5FB"/><text x="186" y="570" font-size="22" fill="#006EBD">{{IMAGE_1}}</text><text x="186" y="670" font-size="21" fill="#17191C">{{RESULT_1}}</text>
+    <rect x="348" y="491" width="276" height="143" fill="#EFF5FB"/><text x="486" y="570" font-size="22" fill="#006EBD">{{IMAGE_2}}</text><text x="486" y="670" font-size="21" fill="#17191C">{{RESULT_2}}</text>
+    <rect x="648" y="491" width="276" height="143" fill="#EFF5FB"/><text x="786" y="570" font-size="22" fill="#006EBD">{{IMAGE_3}}</text><text x="786" y="670" font-size="21" fill="#17191C">{{RESULT_3}}</text>
+    <rect x="948" y="491" width="276" height="143" fill="#EFF5FB"/><text x="1086" y="570" font-size="22" fill="#006EBD">{{IMAGE_4}}</text><text x="1086" y="670" font-size="21" fill="#17191C">{{RESULT_4}}</text>
+  </g>
+  <g id="footer"><text x="1248" y="716" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#6B7280">{{PAGE_NUM}}</text></g>
+</svg>

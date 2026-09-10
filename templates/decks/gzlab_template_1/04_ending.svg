@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <g id="bg"><image href="ending_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="ending" font-family="Microsoft YaHei, Arial" text-anchor="middle" fill="#0443AE">
+    <text x="640" y="331" font-size="64" font-weight="bold">{{THANK_YOU}}</text>
+    <text x="640" y="424" font-size="26">{{CONTACT_INFO}}</text>
+  </g>
+  <g id="footer"><text x="1236" y="706" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

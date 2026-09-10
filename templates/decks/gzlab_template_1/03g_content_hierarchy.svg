@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：左侧实物图片、中央四级金字塔、右侧规模/层级说明；层级的顺序由新主题确定。</desc>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="header"><text x="82" y="48" font-family="Microsoft YaHei, Arial" font-size="32" font-weight="bold" fill="#0443AE">{{PAGE_TITLE}}</text></g>
+  <g id="context" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <text x="220" y="162" font-size="30" font-weight="bold" fill="#0443AE">{{IMAGE_TITLE}}</text>
+    <rect x="40" y="218" width="360" height="332" fill="#EAF2FB" stroke="#7DACFC"/><text x="220" y="391" font-size="26" fill="#4472C4">{{CONTEXT_IMAGE}}</text>
+  </g>
+  <g id="pyramid" font-family="Microsoft YaHei, Arial" font-size="22" text-anchor="middle">
+    <polygon points="760,130 655,249 865,249" fill="#002060"/><text x="760" y="226" fill="#FFFFFF">{{LEVEL_1}}</text>
+    <polygon points="650,255 870,255 942,336 578,336" fill="#0443AE"/><text x="760" y="307" fill="#FFFFFF">{{LEVEL_2}}</text>
+    <polygon points="573,342 947,342 1019,423 501,423" fill="#4472C4"/><text x="760" y="394" fill="#FFFFFF">{{LEVEL_3}}</text>
+    <polygon points="496,429 1024,429 1096,510 424,510" fill="#7DACFC"/><text x="760" y="481" fill="#002060">{{LEVEL_4}}</text>
+  </g>
+  <g id="scale" font-family="Microsoft YaHei, Arial" font-size="20" fill="#333F50">
+    <line x1="883" y1="226" x2="1050" y2="226" stroke="#7DACFC"/><text x="1064" y="233">{{SCALE_1}}</text>
+    <line x1="960" y1="307" x2="1050" y2="307" stroke="#7DACFC"/><text x="1064" y="314">{{SCALE_2}}</text>
+    <line x1="1037" y1="394" x2="1050" y2="394" stroke="#7DACFC"/><text x="1064" y="401">{{SCALE_3}}</text>
+    <text x="1110" y="487" font-size="18">{{SCALE_4}}</text>
+  </g>
+  <g id="takeaway"><rect x="40" y="601" width="1202" height="82" rx="8" fill="#0443AE"/><text x="640" y="652" text-anchor="middle" font-family="Microsoft YaHei, Arial" font-size="30" font-weight="bold" fill="#FFFFFF">{{TAKEAWAY}}</text></g>
+  <g id="footer"><text x="1260" y="712" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

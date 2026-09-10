@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <g id="bg"><image href="toc_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="toc" font-family="Microsoft YaHei, Arial" fill="#0443AE" font-size="30">
+    <text x="477" y="239">{{TOC_ITEM_1_TITLE}}</text>
+    <text x="477" y="307">{{TOC_ITEM_2_TITLE}}</text>
+    <text x="477" y="375">{{TOC_ITEM_3_TITLE}}</text>
+    <text x="477" y="443">{{TOC_ITEM_4_TITLE}}</text>
+  </g>
+</svg>

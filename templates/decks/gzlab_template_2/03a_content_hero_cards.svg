@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：大图氛围、关键结论与指标，下部三张成果图卡。hero背景不是技术证据，三张图片需替换为真实素材。</desc>
+  <defs><linearGradient id="arrow-brand" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0" stop-color="#808080"/><stop offset="0.3" stop-color="#00A871"/><stop offset="0.66" stop-color="#006EBD"/></linearGradient></defs>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="none"/></g>
+  <g id="header"><polygon points="41.83,31.28 90.28,31.28 101.03,49.15 90.28,67.02 41.83,67.02" fill="url(#arrow-brand)"/><text x="114.53" y="62.4" font-family="Microsoft YaHei, Arial" font-size="42.67" font-weight="bold" fill="#17191C">{{PAGE_TITLE}}</text><svg x="1098.31" y="10.82" width="181.66" height="75.06" viewBox="0 0.08826 1 0.91174" preserveAspectRatio="none"><image href="brand_logo.png" x="0" y="0" width="1" height="1" preserveAspectRatio="none"/></svg></g>
+  <g id="hero" font-family="Microsoft YaHei, Arial">
+    <image href="hero_bg.jpeg" x="0" y="108" width="1280" height="368" preserveAspectRatio="none"/>
+    <rect x="0" y="108" width="1280" height="174" fill="#0A4A7A" fill-opacity="0.6"/>
+    <text x="94" y="162" font-size="30" font-weight="bold" fill="#FFFFFF">{{KEY_MESSAGE}}</text>
+    <text x="94" y="204" font-size="22" fill="#FFFFFF">{{CONTEXT_LINE}}</text>
+    <text x="94" y="253" font-size="24" font-weight="bold" fill="#CFE9E0">{{VALUE_STATEMENT}}</text>
+    <text x="1060" y="200" text-anchor="middle" font-size="50" font-weight="bold" fill="#FFFFFF">{{METRIC}}</text>
+    <text x="1060" y="245" text-anchor="middle" font-size="20" fill="#FFFFFF">{{METRIC_LABEL}}</text>
+  </g>
+  <g id="card-one" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="53" y="307" width="372" height="379" rx="14" fill="#FFFFFF" stroke="#E3E6EA"/>
+    <rect x="88" y="282" width="302" height="49" rx="24" fill="#006EBD"/><text x="239" y="315" font-size="24" fill="#FFFFFF">{{ROLE_1}}</text>
+    <rect x="73" y="352" width="332" height="227" fill="#EFF5FB"/><text x="239" y="473" font-size="24" fill="#006EBD">{{IMAGE_1}}</text>
+    <text x="239" y="619" font-size="25" font-weight="bold" fill="#17191C">{{CARD_TITLE_1}}</text><text x="239" y="660" font-size="20" fill="#6B7280">{{CAPTION_1}}</text>
+  </g>
+  <g id="card-two" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="454" y="307" width="372" height="379" rx="14" fill="#FFFFFF" stroke="#E3E6EA"/>
+    <rect x="489" y="282" width="302" height="49" rx="24" fill="#00A871"/><text x="640" y="315" font-size="24" fill="#FFFFFF">{{ROLE_2}}</text>
+    <rect x="474" y="352" width="332" height="227" fill="#EFF5FB"/><text x="640" y="473" font-size="24" fill="#006EBD">{{IMAGE_2}}</text>
+    <text x="640" y="619" font-size="25" font-weight="bold" fill="#17191C">{{CARD_TITLE_2}}</text><text x="640" y="660" font-size="20" fill="#6B7280">{{CAPTION_2}}</text>
+  </g>
+  <g id="card-three" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="855" y="307" width="372" height="379" rx="14" fill="#FFFFFF" stroke="#E3E6EA"/>
+    <rect x="890" y="282" width="302" height="49" rx="24" fill="#00754D"/><text x="1041" y="315" font-size="24" fill="#FFFFFF">{{ROLE_3}}</text>
+    <rect x="875" y="352" width="332" height="227" fill="#EFF5FB"/><text x="1041" y="473" font-size="24" fill="#006EBD">{{IMAGE_3}}</text>
+    <text x="1041" y="619" font-size="25" font-weight="bold" fill="#17191C">{{CARD_TITLE_3}}</text><text x="1041" y="660" font-size="20" fill="#6B7280">{{CAPTION_3}}</text>
+  </g>
+  <g id="footer"><text x="1248" y="710" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#6B7280">{{PAGE_NUM}}</text></g>
+</svg>

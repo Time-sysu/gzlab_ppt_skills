@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <desc>{{CONTENT_AREA}}：六个平台图片、名称和状态，下方两项共性支撑能力；适合总览，详情应拆页。</desc>
+  <g id="bg"><image href="content_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="header"><text x="82" y="48" font-family="Microsoft YaHei, Arial" font-size="32" font-weight="bold" fill="#0443AE">{{PAGE_TITLE}}</text></g>
+  <g id="platforms" font-family="Microsoft YaHei, Arial" text-anchor="middle" font-size="20">
+    <rect x="18" y="114" width="192" height="133" fill="#EAF2FB" stroke="#7DACFC"/><text x="114" y="187" fill="#4472C4">{{IMAGE_1}}</text><rect x="18" y="286" width="192" height="61" fill="#0443AE"/><text x="114" y="324" fill="#FFFFFF">{{NAME_1}}</text><text x="114" y="399" fill="#333F50">{{STATUS_1}}</text><text x="114" y="453" fill="#0443AE">{{OUTPUT_1}}</text>
+    <rect x="228" y="114" width="192" height="133" fill="#EAF2FB" stroke="#7DACFC"/><text x="324" y="187" fill="#4472C4">{{IMAGE_2}}</text><rect x="228" y="286" width="192" height="61" fill="#0443AE"/><text x="324" y="324" fill="#FFFFFF">{{NAME_2}}</text><text x="324" y="399" fill="#333F50">{{STATUS_2}}</text><text x="324" y="453" fill="#0443AE">{{OUTPUT_2}}</text>
+    <rect x="438" y="114" width="192" height="133" fill="#EAF2FB" stroke="#7DACFC"/><text x="534" y="187" fill="#4472C4">{{IMAGE_3}}</text><rect x="438" y="286" width="192" height="61" fill="#0443AE"/><text x="534" y="324" fill="#FFFFFF">{{NAME_3}}</text><text x="534" y="399" fill="#333F50">{{STATUS_3}}</text><text x="534" y="453" fill="#0443AE">{{OUTPUT_3}}</text>
+    <rect x="648" y="114" width="192" height="133" fill="#EAF2FB" stroke="#7DACFC"/><text x="744" y="187" fill="#4472C4">{{IMAGE_4}}</text><rect x="648" y="286" width="192" height="61" fill="#0443AE"/><text x="744" y="324" fill="#FFFFFF">{{NAME_4}}</text><text x="744" y="399" fill="#333F50">{{STATUS_4}}</text><text x="744" y="453" fill="#0443AE">{{OUTPUT_4}}</text>
+    <rect x="858" y="114" width="192" height="133" fill="#EAF2FB" stroke="#7DACFC"/><text x="954" y="187" fill="#4472C4">{{IMAGE_5}}</text><rect x="858" y="286" width="192" height="61" fill="#0443AE"/><text x="954" y="324" fill="#FFFFFF">{{NAME_5}}</text><text x="954" y="399" fill="#333F50">{{STATUS_5}}</text><text x="954" y="453" fill="#0443AE">{{OUTPUT_5}}</text>
+    <rect x="1068" y="114" width="192" height="133" fill="#EAF2FB" stroke="#7DACFC"/><text x="1164" y="187" fill="#4472C4">{{IMAGE_6}}</text><rect x="1068" y="286" width="192" height="61" fill="#0443AE"/><text x="1164" y="324" fill="#FFFFFF">{{NAME_6}}</text><text x="1164" y="399" fill="#333F50">{{STATUS_6}}</text><text x="1164" y="453" fill="#0443AE">{{OUTPUT_6}}</text>
+    <line x1="18" y1="267" x2="1260" y2="267" stroke="#0443AE" stroke-width="2"/>
+  </g>
+  <g id="support" font-family="Microsoft YaHei, Arial" text-anchor="middle">
+    <rect x="42" y="567" width="590" height="126" rx="9" fill="#FFFFFF" stroke="#0443AE" stroke-width="2"/><text x="337" y="610" font-size="28" font-weight="bold" fill="#0443AE">{{SUPPORT_1}}</text><text x="337" y="658" font-size="22" fill="#333F50">{{SUPPORT_DESC_1}}</text>
+    <rect x="650" y="567" width="590" height="126" rx="9" fill="#FFFFFF" stroke="#0443AE" stroke-width="2"/><text x="945" y="610" font-size="28" font-weight="bold" fill="#0443AE">{{SUPPORT_2}}</text><text x="945" y="658" font-size="22" fill="#333F50">{{SUPPORT_DESC_2}}</text>
+  </g>
+  <g id="footer"><text x="1260" y="712" text-anchor="end" font-family="Microsoft YaHei, Arial" font-size="16" fill="#808080">{{PAGE_NUM}}</text></g>
+</svg>

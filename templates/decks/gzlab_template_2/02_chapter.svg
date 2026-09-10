@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <g id="bg"><image href="ending_bg.png" x="0" y="0" width="1280" height="720"/></g>
+  <g id="chapter" font-family="Microsoft YaHei, Arial">
+    <text x="121" y="270" font-size="34" fill="#CFE9E0">{{CHAPTER_NUM}}</text>
+    <text x="121" y="373" font-size="52" font-weight="bold" fill="#FFFFFF">{{CHAPTER_TITLE}}</text>
+    <text x="121" y="518" font-size="26" fill="#CFE9E0">{{CHAPTER_DESC}}</text>
+  </g>
+</svg>
