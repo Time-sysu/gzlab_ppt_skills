@@ -1,6 +1,6 @@
-# Confirm UI — Eight Confirmations Page
+# Confirm UI — Guangzhou Laboratory Template Selector + Eight Confirmations
 
-> The interactive, visual surface for SKILL.md Step 4 (the Eight Confirmations). Enumerable fields list **all** options from a catalog with the AI's recommendation badged; generative fields (color, typography, generated-image style) show a few AI candidates. Fields whose universe is open (canvas, mode, visual style, icons, image usage) also get a **Custom** box; fully closed fields (AI source when applicable, formula policy, generation mode, refine spec) do not. The AI writes its recommendation to `recommendations.json`; the user's final choices are written back to `result.json` for the AI to read. On confirm the page saves the result and shuts the server down (auto-close). The chat path is always a valid fallback — if the browser cannot open (remote / headless / web host), the AI presents the same confirmations in chat.
+> The interactive surface for SKILL.md Step 4. A curated Guangzhou Laboratory template selector appears before the original Eight Confirmations. Template selection is a prerequisite, not a ninth design item. The AI writes its recommendation to `recommendations.json`; the user's final template and eight choices are written back to `result.json`. On confirm the page saves the result and shuts the server down.
 
 ## `confirm_ui/server.py`
 
@@ -18,6 +18,7 @@ python3 scripts/confirm_ui/server.py <project_path> --shutdown    # Step 4 clean
 - `--daemon` starts the Flask process in the background; add `--wait` in the main pipeline so the parent command returns only after the page writes a fresh `result.json`. The `--wait` budget defaults to **590 s** (`--wait-timeout`), kept under the typical 600 s tool ceiling — run the launch with a long tool timeout (≈600000 ms). On timeout the parent returns non-zero but the detached server keeps running, so the caller must re-check `result.json` once before the chat fallback (a slow user may confirm just after the wait returns).
 - `--shutdown` stops a confirm server left running for this project and exits — **idempotent** (a no-op when nothing is running). Tries a graceful `/api/shutdown`, falls back to killing the recorded pid, then clears the lock. SKILL.md Step 4 runs this on every path (page-confirm or chat-fallback) so the page never lingers on the shared port before live preview starts.
 - Refuses to start unless `<project_path>/confirm_ui/recommendations.json` exists (except `--shutdown`, which needs no recommendations).
+- `/api/templates` reads only `templates/gzlab_templates.json`; it deliberately does not expose every upstream deck. `/api/template-preview/<id>` resolves preview files through that allowlist and never accepts a local path.
 - Per-project lock at `<project_path>/.confirm_ui.lock` — duplicate launches are refused; stale locks (dead pid) are overwritten.
 - Idle auto-shutdown after 900 s by default; `/api/shutdown` exits gracefully and releases the lock.
 
@@ -37,6 +38,20 @@ pip install flask
 
 `image_ai_path` is conditional: the page shows it and writes it to `result.json` only when `image_usage` is `ai` or a custom image plan that may include AI. Web-sourced / User-provided / Placeholder / No images paths do not carry an AI backend choice.
 
+## Template selector
+
+`templates/gzlab_templates.json` is the curated source of truth. Each entry contains an `id`, relative `path`, bilingual name/summary/use text, preview filename, canvas, page count, narrative/visual defaults, palette and typography. `recommend.template` marks the AI recommendation; omission falls back to the catalog's `default_id`.
+
+Changing the template in the page resets only template-owned values: canvas, narrative mode, visual style, palette and typography. Page count, audience, icon choice, image strategy and generation mode remain unchanged. Users may fine-tune the reset values afterwards.
+
+After a confirmed result is read, apply it before Strategist writes `design_spec.md`:
+
+```bash
+python3 scripts/apply_selected_template.py <project_path>
+```
+
+The script accepts only catalog IDs, validates `kind: deck`, copies non-image references to `templates/`, copies bitmaps to `images/`, rewrites template SVG bitmap references, and records `.selected_template_manifest.json`. Re-running it removes only files recorded in the previous managed manifest.
+
 ## Catalogs — `static/catalogs.json` (the finite option universe)
 
 The front-end loads `/api/catalogs` (served by the confirm server) and falls back to the static `/static/catalogs.json` if that route is unavailable. `/api/catalogs` returns the static file **with the `canvas` list synced live from `config.py CANVAS_FORMATS`** — the set of formats and their `dim` come from config (single source of truth, zero drift), while bilingual labels / use text stay in catalogs.json (a plain fallback label is synthesized for any new id config adds). Keys: `canvas`, `modes`, `visual_styles` (grouped), `icons`, `image_usage`, `image_ai_path`, `formula_policy`, `generation_mode`. Each entry is `{ "id", "label", "label_zh", "label_en", ... }`; descriptions use `desc_zh` / `desc_en`, and `visual_styles` groups use `group_zh` / `group_en`. The front-end falls back to legacy `label` / `desc` / `group`, so old catalogs still load, but new user-facing catalog text must be bilingual. English labels should mirror canonical reference names (`pyramid`, `swiss-minimal`, `Path A`, `mixed`, etc.); Chinese labels should be translated for users. Descriptions render inline after the option title, not as a separate selected-option line. `visual_styles` is `[{ "group", "group_zh", "group_en", "items": [...] }]`. For `canvas` you only need to maintain the bilingual labels in catalogs.json; the format set and dimensions are authoritative in `config.py CANVAS_FORMATS`.
@@ -51,6 +66,7 @@ Both files live under `<project_path>/confirm_ui/`.
 {
   "lang": "zh",
   "recommend": {
+    "template": "gzlab_research_deck",
     "canvas": "ppt169",
     "mode": "pyramid",
     "visual_style": "swiss-minimal",
@@ -114,6 +130,10 @@ Both files live under `<project_path>/confirm_ui/`.
 
 ```json
 {
+  "template_id": "gzlab_template_1",
+  "template_name": "模板1",
+  "template_path": "templates/decks/gzlab_template_1",
+  "template_kind": "deck",
   "canvas": "ppt169",
   "page_count": "12-15",
   "audience": "...",
@@ -133,10 +153,11 @@ Both files live under `<project_path>/confirm_ui/`.
 ```
 
 - Any option field may instead hold a **free-text custom string** (the user picked **Custom**); `color` / `typography` custom entries set `name: "custom"`. Image usage custom values must be concrete prose plans, not the literal string `"custom"`. The AI interprets custom text against the canonical references.
+- Template selection is closed and allowlisted. The browser returns both display metadata and `template_id`, but downstream loading trusts only `template_id` and resolves the path again from `gzlab_templates.json`.
 - `image_ai_path` and `image_strategy` are omitted from `result.json` unless `image_usage` is `ai` or a custom image plan that may include generated images. Both are honored downstream as confirmed choices — and the page is only a convenience surface over the **canonical chat channel**: the same choices made in chat are honored identically when no `result.json` exists. `image_ai_path` drives the Step 5 generation path (`image-generator.md` §7 — `host-native` forces the host tool even when `IMAGE_BACKEND` is set); the chosen `image_strategy` candidate is locked verbatim by Strategist h.5 (no re-pick).
 - After the user clicks **Confirm**, the page saves `result.json` and shuts the server down (auto-close). In the default `--daemon --wait` flow, the waiting command returns and the AI reads `result.json` immediately; no second chat confirmation is required. Chat confirmation remains the fallback when the page cannot be used. Either way, Step 4 ends with a `--shutdown` cleanup so a never-confirmed page cannot keep holding port 5050 ahead of the Step 6 live preview.
 
 ## Scope
 
-- Confirmation surface only — Strategist authors every recommendation; the page never generates deck content.
+- Confirmation surface only — the page never generates deck content. `apply_selected_template.py` performs the deterministic post-confirmation load.
 - No SVG / layout preview here — that is the live preview server's job (`workflows/live-preview.md`, Step 6).

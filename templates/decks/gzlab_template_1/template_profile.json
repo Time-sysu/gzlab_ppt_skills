@@ -1,0 +1,53 @@
+{
+  "template_id": "gzlab_template_1",
+  "version": 1,
+  "kind": "deck",
+  "name_zh": "模板1",
+  "name_en": "Template 1",
+  "scenarios": [
+    "平台建设、综合进展、多项目对照"
+  ],
+  "scenarios_en": [
+    "Platform building",
+    "portfolio progress and comparisons"
+  ],
+  "keywords": [
+    "平台建设",
+    "综合进展",
+    "多项目对照",
+    "时间线",
+    "流程",
+    "简报"
+  ],
+  "previews": {
+    "cover": "cover_bg.png"
+  },
+  "canvas": "ppt169",
+  "page_count": 14,
+  "narrative_mode": "briefing",
+  "visual_style": "swiss-minimal",
+  "palette": {
+    "background": "#FFFFFF",
+    "secondary_bg": "#EAF2FB",
+    "primary": "#0443AE",
+    "accent": "#00B050",
+    "secondary_accent": "#4472C4",
+    "body_text": "#333F50"
+  },
+  "typography": {
+    "name_zh": "模板1字体",
+    "name_en": "Template 1 typography",
+    "heading": {
+      "cjk": "微软雅黑",
+      "latin": "Arial",
+      "css": "'Microsoft YaHei',Arial"
+    },
+    "body": {
+      "cjk": "微软雅黑",
+      "latin": "Arial",
+      "css": "'Microsoft YaHei',Arial"
+    },
+    "body_size": 24
+  },
+  "icons": "tabler-outline"
+}

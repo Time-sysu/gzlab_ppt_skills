@@ -1,0 +1,52 @@
+{
+  "template_id": "gzlab_template_2",
+  "version": 1,
+  "kind": "deck",
+  "name_zh": "模板2",
+  "name_en": "Template 2",
+  "scenarios": [
+    "领导汇报、成果展示、技术方案对比"
+  ],
+  "scenarios_en": [
+    "Leadership updates",
+    "achievements and technical comparisons"
+  ],
+  "keywords": [
+    "领导汇报",
+    "成果展示",
+    "技术方案对比",
+    "关键指标",
+    "大图"
+  ],
+  "previews": {
+    "cover": "cover_bg.png"
+  },
+  "canvas": "ppt169",
+  "page_count": 7,
+  "narrative_mode": "showcase",
+  "visual_style": "photo-editorial",
+  "palette": {
+    "background": "#FFFFFF",
+    "secondary_bg": "#EFF5FB",
+    "primary": "#006EBD",
+    "accent": "#00A871",
+    "secondary_accent": "#00754D",
+    "body_text": "#17191C"
+  },
+  "typography": {
+    "name_zh": "模板2字体",
+    "name_en": "Template 2 typography",
+    "heading": {
+      "cjk": "微软雅黑",
+      "latin": "Arial",
+      "css": "'Microsoft YaHei',Arial"
+    },
+    "body": {
+      "cjk": "微软雅黑",
+      "latin": "Arial",
+      "css": "'Microsoft YaHei',Arial"
+    },
+    "body_size": 24
+  },
+  "icons": "tabler-outline"
+}

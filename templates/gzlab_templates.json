@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "default_id": "gzlab_research_deck",
+  "templates": [
+    {
+      "id": "gzlab_research_deck",
+      "kind": "deck",
+      "path": "templates/decks/gzlab_research_deck",
+      "name_zh": "广州实验室科研汇报",
+      "name_en": "GZLab Research Report",
+      "summary_zh": "严谨、工程化的科研项目申报与技术路线汇报模板。",
+      "summary_en": "A rigorous research-project and technical-roadmap deck.",
+      "use_zh": "项目申报、技术路线、阶段汇报、验收汇报",
+      "use_en": "Applications, roadmaps, progress and acceptance reviews",
+      "preview": "cover_bg.jpg",
+      "canvas": "ppt169",
+      "page_count": 10,
+      "mode": "pyramid",
+      "visual_style": "blueprint",
+      "palette": {
+        "background": "#FFFFFF",
+        "secondary_bg": "#EAF3FA",
+        "primary": "#0070C0",
+        "accent": "#92D050",
+        "secondary_accent": "#2E75B6",
+        "body_text": "#1F2937"
+      },
+      "typography": {
+        "name_zh": "科研汇报字体",
+        "name_en": "Research report typography",
+        "heading": { "cjk": "微软雅黑", "latin": "Times New Roman", "css": "'Microsoft YaHei','Times New Roman',Arial" },
+        "body": { "cjk": "微软雅黑", "latin": "Times New Roman", "css": "'Microsoft YaHei','Times New Roman',Arial" },
+        "body_size": 20
+      }
+    },
+    {
+      "id": "gzlab_template_1",
+      "kind": "deck",
+      "path": "templates/decks/gzlab_template_1",
+      "name_zh": "模板1",
+      "name_en": "Template 1",
+      "summary_zh": "浅蓝点阵背景，包含目录、时间线、多列对照、平台总览和流程版式。",
+      "summary_en": "A pale-blue research deck with timeline, comparison, platform and process layouts.",
+      "use_zh": "平台建设、综合进展、多项目对照",
+      "use_en": "Platform building, portfolio progress and comparisons",
+      "preview": "cover_bg.png",
+      "canvas": "ppt169",
+      "page_count": 14,
+      "mode": "briefing",
+      "visual_style": "swiss-minimal",
+      "palette": {
+        "background": "#FFFFFF",
+        "secondary_bg": "#EAF2FB",
+        "primary": "#0443AE",
+        "accent": "#00B050",
+        "secondary_accent": "#4472C4",
+        "body_text": "#333F50"
+      },
+      "typography": {
+        "name_zh": "模板1字体",
+        "name_en": "Template 1 typography",
+        "heading": { "cjk": "微软雅黑", "latin": "Arial", "css": "'Microsoft YaHei',Arial" },
+        "body": { "cjk": "微软雅黑", "latin": "Arial", "css": "'Microsoft YaHei',Arial" },
+        "body_size": 24
+      }
+    },
+    {
+      "id": "gzlab_template_2",
+      "kind": "deck",
+      "path": "templates/decks/gzlab_template_2",
+      "name_zh": "模板2",
+      "name_en": "Template 2",
+      "summary_zh": "建筑大图封面与蓝绿成果卡片，突出关键指标和方案对比。",
+      "summary_en": "A photo-led blue-green deck for results, metrics and technical comparisons.",
+      "use_zh": "领导汇报、成果展示、技术方案对比",
+      "use_en": "Leadership updates, achievements and technical comparisons",
+      "preview": "cover_bg.png",
+      "canvas": "ppt169",
+      "page_count": 7,
+      "mode": "showcase",
+      "visual_style": "photo-editorial",
+      "palette": {
+        "background": "#FFFFFF",
+        "secondary_bg": "#EFF5FB",
+        "primary": "#006EBD",
+        "accent": "#00A871",
+        "secondary_accent": "#00754D",
+        "body_text": "#17191C"
+      },
+      "typography": {
+        "name_zh": "模板2字体",
+        "name_en": "Template 2 typography",
+        "heading": { "cjk": "微软雅黑", "latin": "Arial", "css": "'Microsoft YaHei',Arial" },
+        "body": { "cjk": "微软雅黑", "latin": "Arial", "css": "'Microsoft YaHei',Arial" },
+        "body_size": 24
+      }
+    }
+  ]
+}

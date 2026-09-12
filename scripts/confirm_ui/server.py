@@ -43,7 +43,7 @@ import webbrowser
 from pathlib import Path
 from typing import Optional
 
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_file, send_from_directory
 
 # Local — sys.path injection for sibling module (code-style.md §3)
 _SCRIPTS_DIR = Path(__file__).resolve().parent.parent
@@ -72,6 +72,12 @@ RESULT_NAME = 'result.json'
 
 # Static option universe served at /api/catalogs (canvas synced live from config).
 _CATALOGS_PATH = Path(__file__).resolve().parent / 'static' / 'catalogs.json'
+
+# Curated Guangzhou Laboratory template selector. This intentionally does not
+# expose every upstream PPT Master deck from decks_index.json.
+_SKILL_DIR = Path(__file__).resolve().parents[2]
+_TEMPLATE_CATALOG_PATH = _SKILL_DIR / 'templates' / 'gzlab_templates.json'
+_DECK_ROOT = (_SKILL_DIR / 'templates' / 'decks').resolve()
 
 # Shares port 5050 with the live preview server (svg_editor/server.py). The two
 # never run at once: confirm is Step 4 and shuts down on confirm (or idle),
@@ -204,6 +210,49 @@ def _build_catalogs() -> dict:
     return data
 
 
+def _build_template_catalog() -> dict:
+    """Load the curated deck list and attach safe preview URLs."""
+    data = json.loads(_TEMPLATE_CATALOG_PATH.read_text(encoding='utf-8'))
+    entries = data.get('templates')
+    if not isinstance(entries, list):
+        raise ValueError('gzlab_templates.json templates must be a list')
+    result = dict(data)
+    safe_entries = []
+    for raw in entries:
+        if not isinstance(raw, dict) or not raw.get('id') or raw.get('kind') != 'deck':
+            continue
+        entry = dict(raw)
+        entry['preview_url'] = f"/api/template-preview/{entry['id']}"
+        safe_entries.append(entry)
+    result['templates'] = safe_entries
+    return result
+
+
+def _template_preview_path(template_id: str) -> Path:
+    """Resolve a preview only through the curated catalog, never user paths."""
+    catalog = _build_template_catalog()
+    entry = next((item for item in catalog['templates'] if item.get('id') == template_id), None)
+    if entry is None:
+        raise FileNotFoundError(template_id)
+    relative_dir = entry.get('path')
+    preview_name = entry.get('preview')
+    if not isinstance(relative_dir, str) or not isinstance(preview_name, str):
+        raise FileNotFoundError(template_id)
+    template_dir = (_SKILL_DIR / relative_dir).resolve()
+    try:
+        template_dir.relative_to(_DECK_ROOT)
+    except ValueError as exc:
+        raise FileNotFoundError(template_id) from exc
+    preview_path = (template_dir / preview_name).resolve()
+    try:
+        preview_path.relative_to(template_dir)
+    except ValueError as exc:
+        raise FileNotFoundError(template_id) from exc
+    if not preview_path.is_file():
+        raise FileNotFoundError(template_id)
+    return preview_path
+
+
 # --- app --------------------------------------------------------------------
 
 def create_app(
@@ -268,6 +317,22 @@ def create_app(
             return jsonify(_build_catalogs())
         except (OSError, json.JSONDecodeError) as exc:
             return jsonify({'error': f'invalid catalogs.json: {exc}'}), 500
+
+    @app.route('/api/templates')
+    def get_templates():
+        """Serve only the curated Guangzhou Laboratory template choices."""
+        try:
+            return jsonify(_build_template_catalog())
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            return jsonify({'error': f'invalid gzlab_templates.json: {exc}'}), 500
+
+    @app.route('/api/template-preview/<template_id>')
+    def get_template_preview(template_id: str):
+        try:
+            preview_path = _template_preview_path(template_id)
+        except (OSError, ValueError, json.JSONDecodeError, FileNotFoundError):
+            return jsonify({'error': 'template preview not found'}), 404
+        return send_file(preview_path)
 
     @app.route('/api/recommendations')
     def get_recommendations():

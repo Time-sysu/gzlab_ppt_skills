@@ -156,27 +156,28 @@ Import source content (choose based on the situation):
 
 🚧 **GATE**: Step 2 complete; project directory structure is ready.
 
-**Default — Guangzhou Laboratory research deck.** When the user does not provide another explicit template directory and does not explicitly request free design, use `${SKILL_DIR}/templates/decks/gzlab_research_deck` as the template directory. Resolve it relative to this Skill; never hard-code a Windows username or installation path. Validate that the directory contains `design_spec.md` with `kind: deck`, then dispatch it through the normal single-path template flow below.
+**Default — defer the Guangzhou Laboratory deck choice to the Confirm UI.** Read `${SKILL_DIR}/templates/gzlab_templates.json`, verify that its curated entries resolve under `${SKILL_DIR}/templates/decks/`, and do not copy a deck into the project yet. The template selector appears immediately before the original Eight Confirmations; it is a prerequisite, not a ninth design item.
 
-An explicit user choice overrides the default:
+Choose the browser recommendation deterministically:
 
 | User input contains | Step 3 action |
 |---|---|
-| One or more explicit template directory paths (each resolves to a directory containing `design_spec.md` with `kind: brand` / `kind: layout` / `kind: deck` in its YAML frontmatter) | Read each spec's `kind`, dispatch per the kind matrix below, fuse if multiple |
-| An explicit request for free design / no template | Skip template dispatch and proceed to Step 4 with free design |
-| Anything else | Use `${SKILL_DIR}/templates/decks/gzlab_research_deck` |
+| An exact curated template ID, display name, or its explicit directory path | Set `recommend.template` to that catalog ID |
+| Anything else | Set `recommend.template` to `gzlab_templates.json.default_id` (`gzlab_research_deck`) |
 
-There is no fuzzy matching in this first release. A bare non-default template name does not resolve automatically; the user must supply its directory path. A later Guangzhou Laboratory release may replace this rule with an explicit template selector in the confirmation UI.
+Do not fuzzy-match arbitrary names and do not expose other upstream entries from `decks_index.json`. The browser submits a catalog `template_id`; after confirmation Step 4 resolves the path again through the catalog and applies it with `scripts/apply_selected_template.py`.
 
 > Style descriptions ("麦肯锡风格" / "Keynote 风" / "极简风" / etc.) never trigger Step 3. They flow into Strategist's Eight Confirmations as a style brief (color / typography / tone in confirmations e–g).
 
-> Bare names other than the built-in Guangzhou Laboratory default do NOT trigger another registered deck even if a matching directory exists. The user must give a path until the template-selector feature is implemented.
+> Bare curated names “广州实验室科研汇报”, “模板1” and “模板2” resolve exactly through `gzlab_templates.json`. Other bare names do not trigger another registered deck.
 
 > "What templates exist?" is out-of-band Q&A — answer by listing entries from `brands_index.json` / `layouts_index.json` / `decks_index.json` together with their paths. Listing alone does not advance the pipeline; the user must send a path back to trigger Step 3.
 
 > To create a new layout or deck, read [`workflows/create-template.md`](workflows/create-template.md). To create a new brand, read [`workflows/create-brand.md`](workflows/create-brand.md).
 
-#### Three template kinds
+#### Template architecture reference
+
+The curated selector currently accepts `kind: deck` only. The generic kind/fusion rules below describe future extensions; they MUST NOT copy anything during Step 3 of the curated flow.
 
 The architecture has three independent reference bundles. Full schema in [`docs/zh/templates-architecture.md`](../../docs/zh/templates-architecture.md). Summary:
 
@@ -266,13 +267,13 @@ When fusion happens (any multi-path case), the resulting `<project>/templates/de
 
 Single-path Step 3 does **not** add provenance (the source is self-evident from the copied files).
 
-**✅ Checkpoint — Default path proceeds to Step 4 without user interaction. If the user supplied one or more explicit template paths, those have been dispatched (or fused) into `<project_path>/templates/` before advancing.**
+**✅ Checkpoint — Curated catalog loaded and `recommend.template` chosen. No template files are copied until the user confirms in Step 4.**
 
 ---
 
 ### Step 4: Strategist Phase (MANDATORY — cannot be skipped)
 
-🚧 **GATE**: Step 3 complete; default free-design path taken, or (if triggered) template files copied into the project.
+🚧 **GATE**: Step 3 complete; curated Guangzhou Laboratory catalog loaded and a recommended template ID selected. Template files are intentionally not copied yet.
 
 First, read the role definition:
 ```
@@ -281,9 +282,11 @@ Read references/strategist.md
 
 > ⚠️ **Mandatory gate**: before writing `design_spec.md`, Strategist MUST `read_file templates/design_spec_reference.md` and follow its full I–XI section structure. See `strategist.md` Section 1.
 
-**Eight Confirmations** (full template: `templates/design_spec_reference.md`):
+**Template prerequisite + Eight Confirmations** (full design template: `templates/design_spec_reference.md`):
 
 ⛔ **BLOCKING**: present the Eight Confirmations as a single bundled recommendation set and **wait for explicit user confirmation or modification** before outputting Design Specification & Content Outline. This is the single core confirmation point — once confirmed, all subsequent steps proceed automatically.
+
+Before item 1, present the curated Guangzhou Laboratory template recommendation from Step 3. It is selected in the same page and submitted by the same Confirm action, while the original eight-item numbering remains unchanged.
 
 1. Canvas format
 2. Page count range
@@ -296,7 +299,7 @@ Read references/strategist.md
 
 **Confirm UI Auto-Launch (Mandatory — default visual confirmation surface)**: by default the Eight Confirmations are presented through an interactive local page (color swatches, live font previews, candidate picks); the chat path is the always-valid fallback. Steps:
 
-1. Write the recommendations to `<project_path>/confirm_ui/recommendations.json` (full schema + field mapping: [`scripts/docs/confirm_ui.md`](scripts/docs/confirm_ui.md)). Two kinds of field: **enumerable** (canvas / mode / visual_style / icons / formula policy / generation mode; plus image usage with a Custom path; plus AI source only when image usage may include `ai`) — the page lists common options from `confirm_ui/static/catalogs.json`, so you only name the recommended canonical `id` in a `recommend` block (canvas may be a catalog id like `ppt169` or a custom size/prose; style = `mode` + `visual_style`, two independent picks; icon ids are real libraries such as `tabler-outline`, or `emoji` for system emoji; image usage uses `ai` / `web` / `provided` / `placeholder` / `none`, or a custom prose plan when several sources must be combined; never write bare `"custom"` for image usage — write the actual mixed plan, e.g. "AI cover + user product assets + web industry images"; write `image_ai_path` only when recommending `image_usage: "ai"` or a custom plan that includes AI); **generative** (color, typography, generated-image style) — author a few **candidates** (color: user-facing core `palette` with background/secondary_bg/primary/accent/secondary_accent/body_text; typography: CJK + Latin for `heading` and `body` with `css` preview stacks, plus `body_size` as the body baseline px; when recommending generated images, `image_strategy.candidates` with rendering × palette combinations from strategist h.5). `page_count` / `audience` are plain values. Only open fields show a Custom box: `canvas`, `mode`, `visual_style`, `icons`, `image_usage`, and typography custom text. Closed fields (`image_ai_path`, `formula_policy`, `generation_mode`, `refine_spec`) stay finite. Set `lang` to the page language; visible candidate text should match `lang`, or provide bilingual `name_zh` / `name_en` and `note_zh` / `note_en` fields. Reuse the same candidate thinking as strategist h.5.
+1. Write the recommendations to `<project_path>/confirm_ui/recommendations.json` (full schema + field mapping: [`scripts/docs/confirm_ui.md`](scripts/docs/confirm_ui.md)). Set `recommend.template` to the curated ID selected in Step 3. Two kinds of design field remain: **enumerable** (canvas / mode / visual_style / icons / formula policy / generation mode; plus image usage with a Custom path; plus AI source only when image usage may include `ai`) and **generative** (color, typography, generated-image style). The page prepends the selected template's palette and typography; switching template cards resets canvas, mode, visual style, palette and typography to that template's defaults. The user may then fine-tune those fields. `page_count` / `audience` remain plain values. Set `lang` to the page language.
 2. Launch the page **in the background and wait for the browser confirmation** (the child server runs detached; the parent command returns after `result.json` is freshly written). **Run this command with a long tool timeout — 600000 ms** — so the `--wait` (≈590 s budget) can complete:
    ```bash
    python3 ${SKILL_DIR}/scripts/confirm_ui/server.py <project_path> --daemon --wait
@@ -310,7 +313,13 @@ Read references/strategist.md
    ```
    This is **idempotent and required regardless of whether Confirm was clicked**: clicking Confirm already shuts the page down (this is then a no-op), but the chat-fallback path leaves the page running — without this cleanup it would block the live preview launch. Run it after reading the confirmation and before proceeding to Step 5.
 
-**Honoring the confirmation (result.json is authoritative — Mandatory)**: the confirmed values **override your own recommendations** when you write `design_spec.md` / `spec_lock.md`. A user who changed any field changed it on purpose. In particular, map `image_usage` to §VIII `Acquire Via` (its value names differ from §h options — translate):
+6. **Apply the confirmed deck (Mandatory).** After reading the confirmed values and shutting down the page, run:
+   ```bash
+   python3 ${SKILL_DIR}/scripts/apply_selected_template.py <project_path>
+   ```
+   The script trusts only `result.json.template_id`, resolves it through `gzlab_templates.json`, validates `kind: deck`, then copies references and bitmaps into the project. Do not manually substitute the browser-returned `template_path`. Verify `<project_path>/templates/.selected_template_manifest.json` names the confirmed ID before writing `design_spec.md` / `spec_lock.md`.
+
+**Honoring the confirmation (result.json is authoritative — Mandatory)**: the confirmed template and values **override your own recommendations** when you write `design_spec.md` / `spec_lock.md`. Lock `template_id` and the applied manifest source in `spec_lock.md`; confirmed canvas/color/typography micro-adjustments override template defaults. A user who changed any field changed it on purpose. In particular, map `image_usage` to §VIII `Acquire Via` (its value names differ from §h options — translate):
 
 | `result.json.image_usage` | §VIII `Acquire Via` | h.5 + Step 5 generation |
 |---|---|---|

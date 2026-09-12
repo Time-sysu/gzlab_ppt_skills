@@ -1,5 +1,5 @@
 /* PPT Master - Eight Confirmations UI
- * Finite/enumerable fields (canvas, mode, visual style, icons, image usage,
+ * Curated Guangzhou Laboratory template selection plus finite/enumerable fields (canvas, mode, visual style, icons, image usage,
  * AI source, formula policy, generation mode) list ALL options from
  * /static/catalogs.json with the AI's recommendation marked. Open/generative
  * fields (color, typography, generated-image style) show a few AI candidates. Open fields also expose
@@ -21,6 +21,11 @@
             confirmed_hint: "Your choices are saved. You can close this page and return to the chat.",
             lang_toggle_title: "Switch language",
             sec_canvas: "Canvas format",
+            sec_template: "Presentation template",
+            template_note: "Choose a Guangzhou Laboratory deck. Switching templates resets canvas, style, color and typography to that template's defaults.",
+            template_pages: "layouts",
+            template_use: "Best for",
+            template_default_note: "Loaded from the selected template; you can still fine-tune it below.",
             sec_pages: "Page count",
             sec_audience: "Target audience",
             sec_style: "Style objective",
@@ -84,6 +89,11 @@
             confirmed_hint: "选择已保存，可关闭此页并回到聊天窗口。",
             lang_toggle_title: "切换语言",
             sec_canvas: "画布格式",
+            sec_template: "广州实验室模板",
+            template_note: "选择一套模板；切换模板会将画布、风格、色彩和字体恢复为该模板默认值。",
+            template_pages: "种版式",
+            template_use: "适用",
+            template_default_note: "已从所选模板载入，仍可在下方微调。",
             sec_pages: "页数",
             sec_audience: "目标受众",
             sec_style: "风格目标",
@@ -193,6 +203,7 @@
     // ---- state -----------------------------------------------------------
     var CAT = null;     // catalogs.json — finite option universe
     var REC = null;     // recommendations.json — AI picks + candidates
+    var TPL = null;     // gzlab_templates.json — curated local template choices
     var STATE = {};
     var REC_ALIASES = {
         icons: {
@@ -258,6 +269,64 @@
     function recId(field) {
         var value = (REC && REC.recommend && REC.recommend[field]) || legacyRecId(field);
         return normalizeRecId(field, value || null);
+    }
+
+    function templateById(templateId) {
+        var items = (TPL && TPL.templates) || [];
+        for (var i = 0; i < items.length; i += 1) {
+            if (items[i].id === templateId) return items[i];
+        }
+        return null;
+    }
+
+    function selectedTemplate() {
+        return templateById(STATE.template_id);
+    }
+
+    function templateColorCandidate(item) {
+        return {
+            name: "template:" + item.id,
+            name_zh: (item.name_zh || item.id) + "默认色彩",
+            name_en: (item.name_en || item.id) + " palette",
+            note_zh: "来自所选模板，可继续用下方色值微调。",
+            note_en: "Loaded from the selected template; HEX values remain editable.",
+            palette: Object.assign({}, item.palette || {})
+        };
+    }
+
+    function templateTypographyCandidate(item) {
+        var value = Object.assign({}, item.typography || {});
+        value.name = "template:" + item.id;
+        value.name_zh = (item.name_zh || item.id) + "默认字体";
+        value.name_en = (item.name_en || item.id) + " typography";
+        value.note_zh = "来自所选模板，可继续自定义。";
+        value.note_en = "Loaded from the selected template and still editable.";
+        return value;
+    }
+
+    function applyTemplateDefaults(item, shouldRender) {
+        if (!item) return;
+        STATE.template_id = item.id;
+        STATE.template_name = localized(item, "name") || item.id;
+        STATE.template_path = item.path || "";
+        STATE.template_kind = item.kind || "deck";
+        if (item.canvas) STATE.canvas = item.canvas;
+        if (item.mode) STATE.mode = item.mode;
+        if (item.visual_style) STATE.visual_style = item.visual_style;
+        if (item.palette) {
+            var color = templateColorCandidate(item);
+            STATE.color = { name: color.name, palette: Object.assign({}, color.palette) };
+        }
+        if (item.typography) {
+            var type = templateTypographyCandidate(item);
+            STATE.typography = {
+                name: type.name,
+                heading: Object.assign({}, type.heading || {}),
+                body: Object.assign({}, type.body || {}),
+                body_size: type.body_size || ""
+            };
+        }
+        if (shouldRender) renderAll();
     }
     // Guaranteed recommendation: the AI's pick, or the first catalog option as a
     // fallback so an enumerable field ALWAYS shows a badged recommendation.
@@ -452,6 +521,35 @@
     }
 
     // ---- section renderers ----------------------------------------------
+    function renderTemplates(host) {
+        var sec = section("T", "sec_template", t("template_note"));
+        var grid = el("div", "template-grid");
+        var recommendedId = recId("template") || (TPL && TPL.default_id);
+        ((TPL && TPL.templates) || []).forEach(function (item) {
+            var card = el("button", "template-card");
+            card.type = "button";
+            if (STATE.template_id === item.id) card.classList.add("selected");
+            if (recommendedId === item.id) card.classList.add("recommended");
+            var visual = el("div", "template-preview");
+            var img = document.createElement("img");
+            img.src = item.preview_url || ("/api/template-preview/" + encodeURIComponent(item.id));
+            img.alt = localized(item, "name") || item.id;
+            visual.appendChild(img);
+            if (recommendedId === item.id) visual.appendChild(el("span", "template-rec", "★ " + t("recommended")));
+            card.appendChild(visual);
+            card.appendChild(el("div", "template-name", localized(item, "name") || item.id));
+            card.appendChild(el("div", "template-summary", localized(item, "summary")));
+            var meta = [];
+            if (item.page_count) meta.push(item.page_count + " " + t("template_pages"));
+            if (localized(item, "use")) meta.push(t("template_use") + "：" + localized(item, "use"));
+            card.appendChild(el("div", "template-meta", meta.join(" · ")));
+            card.addEventListener("click", function () { applyTemplateDefaults(item, true); });
+            grid.appendChild(card);
+        });
+        sec.appendChild(grid);
+        host.appendChild(sec);
+    }
+
     function renderCanvas(host) {
         var sec = section(1, "sec_canvas");
         enumField(sec, CAT.canvas, recOrFirst("canvas", CAT.canvas),
@@ -496,8 +594,10 @@
     ];
 
     function renderColor(host) {
-        var cands = (REC.color && REC.color.candidates) || [];
-        var sec = section(5, "sec_color");
+        var cands = ((REC.color && REC.color.candidates) || []).slice();
+        var currentTemplate = selectedTemplate();
+        if (currentTemplate && currentTemplate.palette) cands.unshift(templateColorCandidate(currentTemplate));
+        var sec = section(5, "sec_color", t("template_default_note"));
         var grid = el("div", "color-grid");
         var hexInputs = {};
         var hexSwatches = {};
@@ -603,8 +703,10 @@
 
     function renderTypography(host) {
         var f = REC.typography || {};
-        var cands = f.candidates || [];
-        var sec = section(7, "sec_type");
+        var cands = (f.candidates || []).slice();
+        var currentTemplate = selectedTemplate();
+        if (currentTemplate && currentTemplate.typography) cands.unshift(templateTypographyCandidate(currentTemplate));
+        var sec = section(7, "sec_type", t("template_default_note"));
         var grid = el("div", "font-grid");
         var customInput = el("textarea", "text-input custom-typography-input");
         customInput.rows = 2;
@@ -806,6 +908,7 @@
     function renderAll() {
         var host = document.getElementById("sections");
         host.innerHTML = "";
+        renderTemplates(host);
         renderCanvas(host);
         renderPages(host);
         renderAudience(host);
@@ -858,6 +961,10 @@
 
         STATE.generation_mode = pick("generation_mode", CAT.generation_mode);
         STATE.refine_spec = !!((REC.refine_spec && REC.refine_spec.value) || (REC.recommend && REC.recommend.refine_spec));
+
+        var requestedTemplate = recId("template") || (TPL && TPL.default_id);
+        var templateItem = templateById(requestedTemplate) || (((TPL && TPL.templates) || [])[0]);
+        applyTemplateDefaults(templateItem, false);
     }
 
     // ---- confirm + close -------------------------------------------------
@@ -933,10 +1040,12 @@
 
         Promise.all([
             loadCatalogs(),
-            fetch("/api/recommendations").then(function (r) { if (!r.ok) throw new Error("load failed"); return r.json(); })
+            fetch("/api/recommendations").then(function (r) { if (!r.ok) throw new Error("load failed"); return r.json(); }),
+            fetch("/api/templates").then(function (r) { if (!r.ok) throw new Error("template catalog failed"); return r.json(); })
         ]).then(function (res) {
             CAT = res[0];
             REC = res[1];
+            TPL = res[2];
             if (REC.lang === "zh" || REC.lang === "en") {
                 var hasStored = false;
                 try { hasStored = !!window.localStorage.getItem("ppt_lang"); } catch (e) { /* ignore */ }

@@ -1,0 +1,54 @@
+{
+  "template_id": "gzlab_research_deck",
+  "version": 1,
+  "kind": "deck",
+  "name_zh": "广州实验室科研汇报",
+  "name_en": "GZLab Research Report",
+  "scenarios": [
+    "项目申报、技术路线、阶段汇报、验收汇报"
+  ],
+  "scenarios_en": [
+    "Applications",
+    "roadmaps",
+    "progress and acceptance reviews"
+  ],
+  "keywords": [
+    "项目申报",
+    "技术路线",
+    "阶段汇报",
+    "验收汇报",
+    "科研",
+    "金字塔"
+  ],
+  "previews": {
+    "cover": "cover_bg.jpg"
+  },
+  "canvas": "ppt169",
+  "page_count": 10,
+  "narrative_mode": "pyramid",
+  "visual_style": "blueprint",
+  "palette": {
+    "background": "#FFFFFF",
+    "secondary_bg": "#EAF3FA",
+    "primary": "#0070C0",
+    "accent": "#92D050",
+    "secondary_accent": "#2E75B6",
+    "body_text": "#1F2937"
+  },
+  "typography": {
+    "name_zh": "科研汇报字体",
+    "name_en": "Research report typography",
+    "heading": {
+      "cjk": "微软雅黑",
+      "latin": "Times New Roman",
+      "css": "'Microsoft YaHei','Times New Roman',Arial"
+    },
+    "body": {
+      "cjk": "微软雅黑",
+      "latin": "Times New Roman",
+      "css": "'Microsoft YaHei','Times New Roman',Arial"
+    },
+    "body_size": 20
+  },
+  "icons": "tabler-outline"
+}
