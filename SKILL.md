@@ -88,6 +88,8 @@ For complete tool documentation, see `${SKILL_DIR}/scripts/README.md`.
 | `live-preview` | `workflows/live-preview.md` | Browser-based live preview — auto-started during generation and re-enterable any time the user mentions "live preview", "preview", "看效果", or wants to click/select a slide element |
 | `visual-review` | `workflows/visual-review.md` | Per-page rubric-based visual self-check — run only when the user explicitly asks for a visual re-pass on the generated SVGs (between Executor and post-processing). Opt-in only; never invoked by the main pipeline. |
 | `gzlab-quality-gate` | `workflows/gzlab-quality-gate.md` | GZLab expert review gate between Executor and export — pipeline-mandatory by `quality_mode` (draft / standard / final), structured issue list with routed page-scoped fixes |
+| `gzlab-knowledge-retrieval` | `workflows/gzlab-knowledge-retrieval.md` | GZLab lexiang-first asset retrieval for Step 5 — reviewed-library hot path, source-document cold extraction, provenance recording |
+| `gzlab-asset-writeback` | `workflows/gzlab-asset-writeback.md` | Post-export review-style writeback — generated PPTX / AI images / extracted assets are submitted to the lexiang 待审核区 only, never auto-published |
 
 ---
 
@@ -406,6 +408,8 @@ Any `E`-level finding (missing takeaway, >3 points, missing asset query, page-id
 
 > **Trigger**: At least one row in the resource list has `Acquire Via: ai` and/or `Acquire Via: web`. If every row is `user`, `formula`, or `placeholder`, skip to Step 6.
 
+**GZLab Knowledge Base First (Mandatory when any page has `needs_real_asset: true`)**: before any AI generation or web search, run [`workflows/gzlab-knowledge-retrieval.md`](workflows/gzlab-knowledge-retrieval.md) — search the reviewed lexiang asset library first, then locate-and-extract from source documents, and only fall back to AI (with explicit user approval) or placeholders when the knowledge base has nothing. Downloaded KB assets are registered in `design_spec.md` §VIII as `Acquire Via: user` rows, with their true provenance in `asset_sources.json`. AI images must never be presented as real GZLab photos.
+
 **Always load the common framework**:
 
 ```
@@ -600,6 +604,8 @@ Full effect list, anchor logic, and limits: [`references/animations.md`](referen
 > ❌ **NEVER** use `--only` (it suppresses one of the two output files)
 
 > **Post-export annotation window**: the preview service from Step 6 typically remains running after export. If the user submitted annotations in the browser (during Executor or after export) and now asks to apply them — they may quote the browser prompt (`Changes saved to svg_output...` / `修改已保存到 svg_output...`), say "apply my annotations" / "应用注解" / equivalent — run [`live-preview`](workflows/live-preview.md) Step 2 to apply and re-export. Annotations submitted during generation are also handled here, not earlier.
+
+> **Post-export knowledge-base writeback (Mandatory when KB assets or AI images were used, or the deck itself is archivable)**: run [`workflows/gzlab-asset-writeback.md`](workflows/gzlab-asset-writeback.md) — build `writeback_manifest.json`, get explicit user confirmation, then submit to the lexiang 待审核区 only. Automatic writeback NEVER publishes directly.
 
 > **Direct edits in the browser**: the user may also stage text / SVG attribute edits in the preview. These land in `svg_output/` only after the user clicks **Apply changes**. If they ask to "re-export" / "重新导出" after applying such edits, just re-run Step 7.2–7.3 (finalize + export); no annotation-application step is needed unless they also saved AI-needed annotations.
 

@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Time-sysu/gzlab_ppt_skills/templates/asset_sources.schema.json",
+  "title": "asset_sources.json — 素材来源、权限与血缘记录",
+  "description": "Provenance record for every asset used in the deck, at <project>/asset_sources.json. Consumed by check_slide_focus.py (E06), the review expert (gzlab_authenticity), and the writeback workflow.",
+  "type": "object",
+  "required": ["version", "project", "assets"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "project": { "type": "string" },
+    "assets": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/asset" }
+    }
+  },
+  "definitions": {
+    "asset": {
+      "type": "object",
+      "required": ["page_id", "file", "origin", "permission_check"],
+      "additionalProperties": false,
+      "properties": {
+        "page_id": { "type": "string", "pattern": "^P[0-9]{2}$" },
+        "file": { "type": "string", "description": "项目 images/ 内的文件名" },
+        "file_id": { "type": "string", "description": "乐享条目ID（与 lexiang_entry_id 同义，二选一）" },
+        "lexiang_file_id": { "type": "string" },
+        "local_path": { "type": "string", "description": "用户提供素材的原始路径" },
+        "origin": {
+          "type": "string",
+          "enum": ["user_provided", "lexiang_reviewed", "lexiang_pending_internal", "ai_generated", "placeholder"]
+        },
+        "source_file_entry_id": { "type": "string", "description": "乐享源文档条目ID（抽取类素材必填，用于血缘追溯）" },
+        "source_file_name": { "type": "string" },
+        "source_location": { "type": "string", "description": "PPT页码 / PDF页码 / 视频时间点" },
+        "review_status": { "type": "string", "enum": ["待审核", "已审核", "需修改", "已驳回"] },
+        "permission_check": {
+          "type": "object",
+          "required": ["identity", "can_download", "checked_at"],
+          "properties": {
+            "identity": { "type": "string", "description": "执行检索/下载的用户身份" },
+            "can_download": { "type": "boolean", "description": "已验证下载权限（非仅查看）" },
+            "checked_at": { "type": "string", "description": "ISO 8601 时间" }
+          }
+        },
+        "ai_generation": {
+          "type": "object",
+          "description": "origin=ai_generated 时必填；AI素材不得被描述为实验室真实照片",
+          "properties": {
+            "model": { "type": "string" },
+            "prompt": { "type": "string" },
+            "generated_at": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

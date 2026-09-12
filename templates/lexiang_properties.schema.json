@@ -1,0 +1,179 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Time-sysu/gzlab_ppt_skills/templates/lexiang_properties.schema.json",
+  "title": "lexiang_properties — 乐享自定义属性契约（与线上知识库对齐）",
+  "description": "Mirror of the REAL custom fields configured in the 广州实验室知识库 lexiang space (space_id a74abe9d3bc54eb48945e86944cdac79), snapshot 2026-09-12. OpenAPI filtering requires option value IDs — they are recorded here as the single source of truth for the skill. Update this file whenever the KB field config changes.",
+  "type": "object",
+  "properties": {
+    "space": {
+      "type": "object",
+      "properties": {
+        "team_id": { "type": "string", "const": "de178a3095a811f1b394e2657a439bb8" },
+        "space_id": { "type": "string", "const": "a74abe9d3bc54eb48945e86944cdac79" },
+        "root_entry_id": { "type": "string", "const": "34559177b5b94c5687c1ccb219092be1" },
+        "libraries": {
+          "type": "object",
+          "properties": {
+            "综合文档库": { "type": "string", "const": "df63749df95f498d8cf49b2e31f0b56b" },
+            "正式素材库": { "type": "string", "const": "6996b1644fc74774b036405e3179be0c" },
+            "待审核区": { "type": "string", "const": "f93cd14ba2df4464b59bb9f589a6cbf8" },
+            "归档区": { "type": "string", "const": "c3982deb602b4558a5c900733c01703e" }
+          }
+        }
+      }
+    },
+    "fields": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/field" }
+    },
+    "hard_filters": {
+      "type": "array",
+      "description": "检索前置硬过滤字段：权限、审核状态、有效状态、保密级别不可放宽",
+      "items": { "type": "string" },
+      "const": ["审核状态", "有效状态", "保密级别", "允许用途", "是否允许对外使用"]
+    }
+  },
+  "definitions": {
+    "option": {
+      "type": "object",
+      "required": ["value", "label"],
+      "properties": {
+        "value": { "type": "string", "description": "OpenAPI 过滤时使用的选项 value ID" },
+        "label": { "type": "string" },
+        "children": { "type": "array", "items": { "$ref": "#/definitions/option" } }
+      }
+    },
+    "field": {
+      "type": "object",
+      "required": ["name", "field_id", "field_type", "required_for_retrieval"],
+      "properties": {
+        "name": { "type": "string" },
+        "field_id": { "type": "string" },
+        "field_type": { "type": "string", "enum": ["text", "select", "multi_select", "category"] },
+        "description": { "type": "string" },
+        "required_for_retrieval": { "type": "boolean", "description": "素材检索时是否必须填写/过滤" },
+        "options": { "type": "array", "items": { "$ref": "#/definitions/option" } },
+        "synonyms": {
+          "type": "object",
+          "description": "自然语言同义词 → 选项 label（用于 NL→属性条件转换）",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    }
+  },
+  "space": {
+    "team_id": "de178a3095a811f1b394e2657a439bb8",
+    "space_id": "a74abe9d3bc54eb48945e86944cdac79",
+    "root_entry_id": "34559177b5b94c5687c1ccb219092be1",
+    "libraries": {
+      "综合文档库": "df63749df95f498d8cf49b2e31f0b56b",
+      "正式素材库": "6996b1644fc74774b036405e3179be0c",
+      "待审核区": "f93cd14ba2df4464b59bb9f589a6cbf8",
+      "归档区": "c3982deb602b4558a5c900733c01703e"
+    }
+  },
+  "hard_filters": ["审核状态", "有效状态", "保密级别", "允许用途", "是否允许对外使用"],
+  "fields": [
+    {
+      "name": "审核状态", "field_id": "0391dc49cac94e77a2dd66ed617f46ce", "field_type": "select",
+      "required_for_retrieval": true,
+      "options": [
+        { "value": "hq2l2mjk9et", "label": "待审核" },
+        { "value": "y77btindvag", "label": "已审核" },
+        { "value": "ojstf7luo9", "label": "需修改" },
+        { "value": "3pfy9duymi4", "label": "已驳回" }
+      ]
+    },
+    {
+      "name": "有效状态", "field_id": "8a7e2944c814434398ccdae6348338ff", "field_type": "select",
+      "required_for_retrieval": true,
+      "options": [
+        { "value": "mc5thmm4kvg", "label": "有效" },
+        { "value": "9z0gz9zu81v", "label": "待复核" },
+        { "value": "walfu37unpd", "label": "已过期" },
+        { "value": "rp17qg403ja", "label": "已归档" }
+      ]
+    },
+    {
+      "name": "保密级别", "field_id": "c4efc89cc6a848a1b75c4fc5c227f74d", "field_type": "select",
+      "required_for_retrieval": true,
+      "options": [
+        { "value": "qpvr3wyqnkn", "label": "公开" },
+        { "value": "m6q72tzxhpi", "label": "实验室内部" },
+        { "value": "hrzjvnelm", "label": "项目组" },
+        { "value": "1nqzbyjzbj7", "label": "受限" }
+      ]
+    },
+    {
+      "name": "允许用途", "field_id": "51230c25f0304dec9f0668501824d148", "field_type": "multi_select",
+      "required_for_retrieval": true,
+      "options": [
+        { "value": "oxj0zqqumff", "label": "内部汇报" },
+        { "value": "klmpyaoghn", "label": "项目申报" },
+        { "value": "2a5v4s8qzin", "label": "学术交流" },
+        { "value": "fnnhci559mo", "label": "宣传展示" },
+        { "value": "8a7heekv2", "label": "允许对外" }
+      ],
+      "synonyms": {
+        "申报书": "项目申报", "揭榜挂帅": "项目申报", "项目答辩": "项目申报",
+        "组会": "内部汇报", "周会": "内部汇报", "会议报告": "学术交流"
+      }
+    },
+    {
+      "name": "是否允许对外使用", "field_id": "9968099e5f114625a364b3ccd953a295", "field_type": "select",
+      "required_for_retrieval": true,
+      "options": [
+        { "value": "y1cr65en7yd", "label": "允许" },
+        { "value": "4njppp8xnes", "label": "不允许" },
+        { "value": "bc767n4q7pb", "label": "需审批" }
+      ]
+    },
+    {
+      "name": "所属项目", "field_id": "d200712eed8e4e478b6974eaa95e2a14", "field_type": "category",
+      "required_for_retrieval": false,
+      "options": [
+        { "value": "yape4m4qfxl", "label": "qPCR" },
+        { "value": "7uth24d0gb", "label": "数字显微镜项目",
+          "children": [{ "value": "avdnglat9ej", "label": "全息显微镜计算成像" }] },
+        { "value": "2khhb7tb0m9", "label": "电镜" },
+        { "value": "mn932yhlm9", "label": "人工智能+高端科学设备仪器" },
+        { "value": "3kcxlmvmwpp", "label": "实验室管理相关材料" },
+        { "value": "u4ezprg46a", "label": "太空" },
+        { "value": "40ngswhar12", "label": "结构化思维" }
+      ],
+      "synonyms": {
+        "电镜": "电镜", "冷冻电镜": "电镜", "cryo-EM": "电镜", "冷冻透射电镜": "电镜",
+        "PCR": "qPCR", "PCR仪": "qPCR", "显微镜": "数字显微镜项目"
+      }
+    },
+    {
+      "name": "内容描述", "field_id": "d83b548ad55e4c08b68323b1a06d67d0", "field_type": "text",
+      "required_for_retrieval": false,
+      "description": "对画面主体、动作、场景、设备和用途的自然语言描述；OpenAPI 文本字段支持模糊搜索"
+    },
+    {
+      "name": "来源文件", "field_id": "1bd5ac23d1d44f3bbc456c5ff23d4634", "field_type": "text",
+      "required_for_retrieval": false, "description": "原文档名称"
+    },
+    {
+      "name": "来源位置", "field_id": "60849967569f425884c94895da8f88b1", "field_type": "text",
+      "required_for_retrieval": false, "description": "PPT页码、PDF页码、视频时间点等"
+    },
+    {
+      "name": "素材ID", "field_id": "5b80100508db4c3f9594dace92675f6b", "field_type": "text",
+      "required_for_retrieval": false, "description": "自有编号，默认 gzlab_asset_000000"
+    },
+    {
+      "name": "引用次数", "field_id": "a7bdce00d90943148caa27fcc2924dcd", "field_type": "text",
+      "required_for_retrieval": false, "description": "整数，默认 0"
+    },
+    {
+      "name": "责任人", "field_id": "98cff8c1b7484979b028ed43af079aea", "field_type": "text",
+      "required_for_retrieval": false, "description": "姓名或账号"
+    }
+  ],
+  "planned_missing_fields": {
+    "description": "方案 §4.2 第一版必需但线上尚未配置的字段；补齐前检索工作流按 gzlab-asset-retrieval.md §3.1 的降级规则执行",
+    "items": ["素材标题", "素材类型", "场景标签", "PPT用途", "涉及仪器/平台", "图片方向", "质量等级", "素材来源", "来源文件ID"]
+  }
+}

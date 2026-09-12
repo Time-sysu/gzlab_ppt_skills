@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Time-sysu/gzlab_ppt_skills/templates/writeback_manifest.schema.json",
+  "title": "writeback_manifest.json — 哪些新成果需要提交乐享审核",
+  "description": "Writeback list produced after export, at <project>/writeback_manifest.json. Automatic writeback submits ONLY to the lexiang 待审核区; nothing is ever auto-published. Executed by workflows/gzlab-asset-writeback.md after user confirmation.",
+  "type": "object",
+  "required": ["version", "project", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "project": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["pending_user_confirm", "confirmed", "submitted", "partial_failure"],
+      "default": "pending_user_confirm"
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/item" }
+    }
+  },
+  "definitions": {
+    "item": {
+      "type": "object",
+      "required": ["kind", "file", "target_library", "properties"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["generated_pptx", "ai_image", "extracted_asset", "new_reusable_image"],
+          "description": "generated_pptx→PPT-master生成成果目录；ai_image→AI生成素材目录；extracted_asset/new_reusable_image→文档抽取/新素材目录"
+        },
+        "file": { "type": "string", "description": "本地文件路径（相对项目根）" },
+        "target_library": {
+          "type": "string",
+          "enum": ["待审核区"],
+          "description": "自动回写只允许进入待审核区"
+        },
+        "target_subfolder": { "type": "string", "description": "待审核区子目录，如 文档抽取素材 / AI生成素材 / PPT-master生成成果" },
+        "properties": {
+          "type": "object",
+          "description": "按 lexiang_properties.schema.json 填写的属性建议（审核状态强制=待审核）",
+          "properties": {
+            "内容描述": { "type": "string" },
+            "所属项目": { "type": "array", "items": { "type": "string" } },
+            "来源文件": { "type": "string" },
+            "来源位置": { "type": "string" },
+            "素材ID": { "type": "string" },
+            "责任人": { "type": "string" },
+            "审核状态": { "type": "string", "const": "待审核" }
+          },
+          "additionalProperties": true
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "source_file_entry_id": { "type": "string" },
+            "source_location": { "type": "string" },
+            "ai_generation": {
+              "type": "object",
+              "properties": {
+                "model": { "type": "string" },
+                "prompt": { "type": "string" },
+                "generated_at": { "type": "string" }
+              }
+            }
+          }
+        },
+        "result": {
+          "type": "object",
+          "description": "提交后回填",
+          "properties": {
+            "lexiang_entry_id": { "type": "string" },
+            "submitted_at": { "type": "string" },
+            "error": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
