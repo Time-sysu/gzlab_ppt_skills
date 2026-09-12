@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import time
 import urllib.error
@@ -45,6 +46,15 @@ SKILL_DIR = Path(__file__).resolve().parent.parent
 PROPERTIES_PATH = SKILL_DIR / "templates" / "lexiang_properties.schema.json"
 DEFAULT_BASE_URL = "https://lxapi.lexiangla.com"
 TOKEN_EXPIRY_MARGIN = 300  # refresh 5 min early
+
+_EXT_BY_MIME = {
+    "image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp",
+    "image/gif": ".gif", "image/bmp": ".bmp", "image/tiff": ".tiff",
+    "application/pdf": ".pdf",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": ".pptx",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+    "video/mp4": ".mp4", "video/quicktime": ".mov",
+}
 
 
 class LexiangError(RuntimeError):
@@ -181,14 +191,20 @@ class LexiangClient:
 
     def search_entries(self, keyword: str, space_id: str,
                        properties: list[dict] | None = None,
-                       limit: int = 20, page_token: str = "") -> dict:
+                       limit: int = 20, page_token: str = "",
+                       staff_id: str | None = None) -> dict:
         """POST /kb/entries/search — property filters are AND-combined;
-        select/category keys are option key IDs (from the contract file)."""
+        select/category keys are option key IDs (from the contract file).
+        Requires a member identity (x-staff-id) — verified 2026-09-13:
+        without StaffID the endpoint returns 403 "用户身份获取失败"."""
         body: dict = {"keyword": keyword, "space_id": space_id,
                       "limit": limit, "page_token": page_token}
         if properties:
             body["filters"] = {"properties": properties}
-        return self.api("POST", "/cgi-bin/v1/kb/entries/search", body)
+        staff = staff_id or self.cfg.get("staff_id")
+        if not staff:
+            raise LexiangError("search requires LEXIANG_STAFF_ID (x-staff-id)")
+        return self.api("POST", "/cgi-bin/v1/kb/entries/search", body, staff_id=staff)
 
     def list_entries(self, space_id: str, parent_id: str | None = None,
                      limit: int = 100, page_token: str | None = None) -> dict:
@@ -203,7 +219,9 @@ class LexiangClient:
         return self.api("GET", f"/cgi-bin/v1/kb/entries/{entry_id}")
 
     def download_entry(self, entry_id: str, dest_dir: Path) -> Path:
-        """Detail → links.download (valid 60 min) → save file."""
+        """Detail → links.download (valid 60 min) → save file.
+        Entry names may carry no extension — one is appended from the
+        download response's Content-Type when missing."""
         detail = self.describe_entry(entry_id)
         data = detail.get("data") or {}
         url = (detail.get("links") or data.get("links") or {}).get("download")
@@ -212,17 +230,27 @@ class LexiangClient:
                 f"no download link for entry {entry_id} — non-uploadable source or no permission")
         name = (data.get("attributes") or {}).get("name") or f"{entry_id}.bin"
         dest_dir.mkdir(parents=True, exist_ok=True)
-        target = dest_dir / name
         req = urllib.request.Request(url)
         try:
-            with urllib.request.urlopen(req, timeout=600) as resp, target.open("wb") as fh:
-                while True:
-                    chunk = resp.read(1 << 20)
-                    if not chunk:
-                        break
-                    fh.write(chunk)
+            with urllib.request.urlopen(req, timeout=600) as resp:
+                content_type = (resp.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+                disposition = resp.headers.get("Content-Disposition") or ""
+                payload = resp.read()
         except urllib.error.URLError as exc:
             raise LexiangError(f"download failed for {name}: {exc}") from exc
+        # Real filename lives in Content-Disposition (entry names may lack an
+        # extension; COS serves application/octet-stream with the true name).
+        cd_match = re.search(r"filename\*?=(?:utf-8''|\")?([^\";]+)", disposition)
+        if cd_match and not Path(name).suffix:
+            cd_name = urllib.parse.unquote(cd_match.group(1))
+            if Path(cd_name).suffix:
+                name = cd_name
+        target = dest_dir / Path(name).name
+        if not target.suffix:
+            ext = _EXT_BY_MIME.get(content_type)
+            if ext:
+                target = target.with_suffix(ext)
+        target.write_bytes(payload)
         return target
 
     def upload_file(self, file_path: Path, media_type: str = "file",

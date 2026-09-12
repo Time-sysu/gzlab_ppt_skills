@@ -28,8 +28,8 @@ from pathlib import Path
 SKILL_DIR = Path(__file__).resolve().parent.parent
 PROPERTIES_PATH = SKILL_DIR / "templates" / "lexiang_properties.schema.json"
 
-# Orientation cues are not lexiang fields yet (planned_missing_fields); they are
-# returned separately so the caller can post-filter by aspect ratio.
+# Orientation cues — real 图片方向 field exists since 2026-09-13 and is matched
+# via contract synonyms/labels; these rules are only a legacy fallback.
 ORIENTATION_RULES = {
     "横版": ["横版", "横图", "宽图", "横版照片", "横幅"],
     "竖版": ["竖版", "竖图", "竖版照片", "竖幅"],
@@ -37,8 +37,7 @@ ORIENTATION_RULES = {
     "全景": ["全景"],
 }
 
-# Media-type cues → file-extension groups (素材类型 field is not configured yet;
-# see lexiang_properties.schema.json planned_missing_fields).
+# Media-type cues — real 素材类型 field exists since 2026-09-13; legacy fallback.
 MEDIA_TYPE_RULES = {
     "图片": ["图片", "照片", "配图", "实景图", "影像"],
     "视频": ["视频", "录像", "片段"],
@@ -105,22 +104,28 @@ def parse(query: str, intended_use: str | None, props: dict) -> dict:
             if len(label) >= 2 and label in query and label not in filters.get(field_name, []):
                 consume(label, field_name, label)
 
-    # 3) orientation / media type (fields not yet configured in the KB)
+    # 3) orientation / media type. Since 2026-09-13 the KB has real 图片方向 /
+    # 素材类型 fields and rules 1–2 (contract synonyms + direct option labels)
+    # already map cues into real filters; the hardcoded rules below only run as
+    # a fallback when the field is absent from the contract (legacy).
+    field_names = set(option_index.keys())
     orientation = None
-    for label, cues in ORIENTATION_RULES.items():
-        hit = next((c for c in cues if c in query), None)
-        if hit:
-            orientation = label
-            for m in re.finditer(re.escape(hit), query):
-                consumed_spans.append(m.span())
-            break
-    media_types = []
-    for label, cues in MEDIA_TYPE_RULES.items():
-        hit = next((c for c in cues if c in query), None)
-        if hit:
-            media_types.append(label)
-            for m in re.finditer(re.escape(hit), query):
-                consumed_spans.append(m.span())
+    if "图片方向" not in field_names:
+        for label, cues in ORIENTATION_RULES.items():
+            hit = next((c for c in cues if c in query), None)
+            if hit:
+                orientation = label
+                for m in re.finditer(re.escape(hit), query):
+                    consumed_spans.append(m.span())
+                break
+    media_types: list[str] = []
+    if "素材类型" not in field_names:
+        for label, cues in MEDIA_TYPE_RULES.items():
+            hit = next((c for c in cues if c in query), None)
+            if hit:
+                media_types.append(label)
+                for m in re.finditer(re.escape(hit), query):
+                    consumed_spans.append(m.span())
 
     # 4) leftover terms → 内容描述 fuzzy search
     mask = list(query)

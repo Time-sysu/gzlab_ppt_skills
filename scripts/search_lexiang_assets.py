@@ -66,6 +66,16 @@ def _field_id(contract: dict, name: str) -> str | None:
     return None
 
 
+def _fetch_entries(client: LexiangClient, keyword: str, properties: list[dict],
+                   limit: int) -> list[dict]:
+    resp = client.search_entries(keyword=keyword, space_id=client.cfg["space_id"],
+                                 properties=properties, limit=limit)
+    entries = resp.get("data") or []
+    if isinstance(entries, dict):  # defensive: some APIs wrap lists
+        entries = entries.get("items") or []
+    return entries
+
+
 def search_assets(query: str, intended_use: str | None, max_results: int,
                   client: LexiangClient, contract: dict) -> dict:
     parsed = parse_asset_query.parse(query, intended_use, contract)
@@ -75,15 +85,36 @@ def search_assets(query: str, intended_use: str | None, max_results: int,
         if fid and values:
             properties.append({"id": fid, "keys": values})
 
-    keyword = " ".join(parsed.get("leftover_terms") or []) or query
-    resp = client.search_entries(keyword=keyword, space_id=client.cfg["space_id"],
-                                 properties=properties, limit=max_results * 3)
+    # Leftover semantics go to the 内容描述 TEXT filter (fuzzy) — the generic
+    # `keyword` only matches entry titles, which are asset IDs in this KB and
+    # would AND-filter everything away (verified live 2026-09-13). Relaxation
+    # chain (hard filters NEVER relax, gzlab-knowledge-base.md §3):
+    #   1) properties + 内容描述~leftover
+    #   2) properties + title keyword
+    #   3) properties only — leftover text is a relevance constraint, droppable
+    leftover = " ".join(parsed.get("leftover_terms") or [])
+    desc_fid = _field_id(contract, "内容描述")
+    keyword_used = ""
+    relaxations: list[str] = []
+    entries: list[dict] = []
+    if leftover and desc_fid:
+        entries = _fetch_entries(client, "", properties + [{"id": desc_fid, "keys": [leftover]}],
+                                 max_results * 3)
+        keyword_used = f"内容描述~{leftover}"
+    if not entries and leftover:
+        entries = _fetch_entries(client, leftover, properties, max_results * 3)
+        keyword_used = leftover
+        if entries:
+            relaxations.append("内容描述 fuzzy miss → title keyword")
+    if not entries and leftover:
+        entries = _fetch_entries(client, "", properties, max_results * 3)
+        keyword_used = "(property-only)"
+        if entries:
+            relaxations.append(f"text constraint '{leftover}' relaxed — property-only pass")
 
-    entries = resp.get("data") or []
-    if isinstance(entries, dict):  # defensive: some APIs wrap lists
-        entries = entries.get("items") or []
-
-    media_hints = parsed.get("media_type_hint") or []
+    # Extension post-filter is a LEGACY fallback — only when the query did not
+    # resolve to a real 素材类型 filter (field exists since 2026-09-13).
+    media_hints = [] if (parsed.get("filters") or {}).get("素材类型") else (parsed.get("media_type_hint") or [])
     candidates = []
     for item in entries:
         attrs = item.get("attributes") or {}
@@ -109,10 +140,11 @@ def search_assets(query: str, intended_use: str | None, max_results: int,
         "hard_filters_injected": ["审核状态=已审核", "有效状态=有效"]
         + ([f"允许用途={intended_use}"] if intended_use else []),
         "applied_property_filters": parsed.get("filters") or {},
-        "keyword_used": keyword,
+        "keyword_used": keyword_used,
         "orientation_hint": parsed.get("orientation_hint"),
         "media_type_hint": media_hints,
         "missing_field_warnings": parsed.get("missing_field_warnings") or [],
+        "relaxations": relaxations,
         "candidates": candidates,
         "candidate_count": len(candidates),
     }
