@@ -30,11 +30,20 @@ Logo/背景/装饰元素、未采用的候选。
 
 对确认的每条：`submit_asset_for_review` / `submit_generated_artifact` ——
 
+```bash
+python3 ${SKILL_DIR}/scripts/submit_lexiang_asset.py <文件> \
+    --target-subfolder <文档抽取素材|AI生成素材|PPT-master生成成果|人工上传材料> \
+    --properties '{"内容描述":"...","所属项目":["..."],"来源文件":"...","来源位置":"...","责任人":"..."}' \
+    --provenance '{"source_file_entry_id":"...","source_location":"..."}' \
+    --user-identity "<用户>"
+```
+
 1. 上传到 03_待审核区 对应子目录。
 2. OpenAPI 填写属性：内容描述、所属项目、来源文件、来源位置、素材ID、
-   责任人；**审核状态强制 = 待审核**；AI 素材记录模型与提示词。
+   责任人；**审核状态强制 = 待审核**（脚本内强制，调用方无法覆盖）；
+   AI 素材记录模型与提示词。
 3. 结果回填 `writeback_manifest.json items[].result`（entry_id / submitted_at
-   / error）；失败条目标记 error 并保留「待回写」，不得伪装成功。
+   / error）；失败时脚本输出 `status: 待回写` 并保留清单，不得伪装成功。
 
 ## Step W4 — 收尾
 

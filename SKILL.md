@@ -60,6 +60,7 @@ description: >
 | `${SKILL_DIR}/scripts/svg_to_pptx.py` | Export to PPTX |
 | `${SKILL_DIR}/scripts/update_spec.py` | Propagate a `spec_lock.md` color / font_family change across all generated SVGs |
 | `${SKILL_DIR}/scripts/check_slide_focus.py` | GZLab page-focus check — Gate A validates `slide_briefs.json`, Gate B measures generated pages against rhythm budgets |
+| `${SKILL_DIR}/scripts/lexiang_openapi_client.py` | GZLab knowledge-base access layer — official OpenAPI client (token cache, entry search, download, 3-step upload, property values); companions: `parse_asset_query.py`, `search_lexiang_assets.py`, `locate_lexiang_source.py`, `extract_ppt_assets.py`, `extract_video_keyframes.py`, `submit_lexiang_asset.py` (contract: `references/gzlab-asset-retrieval.md` §5) |
 
 For complete tool documentation, see `${SKILL_DIR}/scripts/README.md`.
 

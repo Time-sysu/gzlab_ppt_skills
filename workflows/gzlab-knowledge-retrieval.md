@@ -17,26 +17,33 @@
 
 ## Step R2 — 热检索（正式素材库）
 
-对每条请求执行 `search_gzlab_assets`（当前经乐享 MCP
-`entry_list_children` + `filters.field_values`；脚本实现后走
-`scripts/search_lexiang_assets.py`）：
+对每条请求执行 `search_gzlab_assets`：
+
+- **脚本路径（默认）**：`python3 ${SKILL_DIR}/scripts/search_lexiang_assets.py "<semantic_query>" --intended-use "<用途>" --max-results 5 --user-identity "<用户>"`；
+- **MCP 路径（无 OpenAPI 凭证时）**：乐享 `entry_list_children` + `filters.field_values`，语义一致。
 
 1. 注入硬过滤：审核状态=已审核、有效状态=有效、允许用途⊇本次用途；
    对外用途追加 是否允许对外使用=允许。
 2. 应用请求 filters（缺失属性按检索规则 §3.1 降级）。
 3. 候选按内容描述相关度 + 质量重排，取前 `max_results` 条。
-4. **命中即下载**该独立文件到 `<project>/images/`，不再触碰源文档。
+4. **命中即下载**该独立文件到 `<project>/images/`，不再触碰源文档
+   （`lexiang_openapi_client.py download_entry` 或 MCP 文件下载）。
 
 ## Step R3 — 冷检索（源文档定位 + 定向抽取）
 
 热检索未命中的页面：
 
-1. `locate_source_media`：乐享 Agent 正文检索综合文档库，定位源文件与页码/时间点。
+1. `locate_source_media`：`python3 ${SKILL_DIR}/scripts/locate_lexiang_source.py "<query>" --document-types pptx,pdf,video --user-identity "<用户>"`
+   （AI 搜索优先，关键词检索兜底；MCP 路径用语义检索工具），定位源文件与页码/时间点。
 2. 校验当前用户对源文件的**下载权限**（无权限 → 该源立即排除，不泄露其信息）。
-3. `extract_source_asset` 下载并只处理目标页/时间段，剔除 Logo、页眉页脚、模板背景。
+3. `extract_source_asset` 下载并只处理目标页/时间段：
+   `python3 ${SKILL_DIR}/scripts/extract_ppt_assets.py <源.pptx> --pages <页码> --out-dir <project>/.kb_cache/`
+   （视频用 `extract_video_keyframes.py --timecodes`），自动剔除 Logo、页眉页脚、模板背景。
 4. 候选结合页标题与上下文生成属性建议；与用户确认后选定实际采用的素材。
-5. 采用的素材上传待审核区（`submit_asset_for_review`，审核状态=待审核），
-   当前内部任务按规则临时使用（origin = `lexiang_pending_internal`）。
+5. 采用的素材上传待审核区：
+   `python3 ${SKILL_DIR}/scripts/submit_lexiang_asset.py <文件> --target-subfolder 文档抽取素材 --properties '{...}' --provenance '{...}'`
+   （审核状态强制=待审核），当前内部任务按规则临时使用
+   （origin = `lexiang_pending_internal`）。
 
 ## Step R4 — 锁定与记录
 

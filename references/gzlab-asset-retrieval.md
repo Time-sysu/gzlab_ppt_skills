@@ -67,10 +67,21 @@
 - 只把**实际采用**的素材提交乐享待审核区；未采用候选留在任务临时目录并定期清理。
 - 同一源文件同一任务内只下载解析一次（任务级缓存）。
 
-## 5. 统一接口契约（脚本实现前的稳定签名）
+## 5. 统一接口契约与脚本实现
 
-以下接口是 skill 与乐享适配层之间的稳定边界。当前由 WorkBuddy 乐享 MCP
-工具实现；独立脚本（scripts/lexiang_*.py）实现时必须保持签名与语义不变：
+以下接口是 skill 与乐享适配层之间的稳定边界。**脚本已实现**（2026-09-12）；
+WorkBuddy 会话中也可继续使用乐享 MCP 工具，两者语义一致：
+
+| 接口 | 实现 |
+|---|---|
+| `search_gzlab_assets` | `scripts/search_lexiang_assets.py`（NL→属性条件经 `scripts/parse_asset_query.py`） |
+| `locate_source_media` | `scripts/locate_lexiang_source.py`（AI 搜索优先，关键词检索兜底） |
+| `extract_source_asset` | `scripts/lexiang_openapi_client.py download_entry` + `scripts/extract_ppt_assets.py` / `scripts/extract_video_keyframes.py` |
+| `submit_asset_for_review` | `scripts/submit_lexiang_asset.py`（三步上传 + 属性填写，审核状态强制待审核） |
+| `update_lexiang_properties` | `scripts/lexiang_openapi_client.py update_properties` |
+| `submit_generated_artifact` | `scripts/submit_lexiang_asset.py --target-subfolder PPT-master生成成果` |
+
+接口语义：
 
 ```text
 search_gzlab_assets(query, user_identity, intended_use, filters, max_results)
@@ -98,3 +109,8 @@ submit_generated_artifact(file, generation_manifest)
 
 约定：所有接口显式接收 `user_identity`；任何权限失败返回空结果而非错误
 详情；脚本配置走环境变量（`.env.example` 列出键名，真实值永不入库）。
+客户端 `scripts/lexiang_openapi_client.py` 基于官方 OpenAPI
+（lxapi.lexiangla.com）：token 2 小时有效并缓存到
+`~/.gzlab_ppt/lexiang_token.json`；属性**过滤**使用选项 key ID（见契约
+schema），属性**写入**使用选项 label；写操作与 AI 搜索必须携带
+`x-staff-id`（用户身份），统一应用凭证下不得绕过最终用户权限。

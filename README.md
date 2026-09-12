@@ -64,7 +64,7 @@ templates/decks/gzlab_research_deck
 - 已将模板选择集成到本地确认网页：用户先从“广州实验室科研汇报”“模板1”“模板2”中选择，再完成原有八项设计确认；确认结果会驱动对应模板、配色、字体、叙事模式与视觉风格的加载；
 - 页面级内容契约 `slide_briefs.json`：一页一结论、最多三个支持点、一个主要视觉焦点，由 `scripts/check_slide_focus.py` 在生成前后两道门自动检查（规则见 `references/gzlab-content-rules.md`）；
 - 广州实验室审查专家质量门（`workflows/gzlab-quality-gate.md`）：按 draft/standard/final 模式在导出前输出结构化问题单并定向退回，最多两轮收敛；
-- 乐享知识库接入层契约与流程：检索（`workflows/gzlab-knowledge-retrieval.md`）与审核式回写（`workflows/gzlab-asset-writeback.md`）已定义，属性字典与线上知识库实时对齐于 `templates/lexiang_properties.schema.json`；独立 OpenAPI 脚本按 `references/gzlab-asset-retrieval.md` §5 接口契约后续实现。
+- 乐享知识库接入层：检索（`workflows/gzlab-knowledge-retrieval.md`）与审核式回写（`workflows/gzlab-asset-writeback.md`）流程，属性字典与线上知识库实时对齐于 `templates/lexiang_properties.schema.json`；OpenAPI 脚本已实现——`lexiang_openapi_client.py`（官方 OpenAPI 客户端）、`parse_asset_query.py`、`search_lexiang_assets.py`、`locate_lexiang_source.py`、`extract_ppt_assets.py`、`extract_video_keyframes.py`、`submit_lexiang_asset.py`，凭证走环境变量（`.env.example`）。
 
 ## 来源与授权
 
