@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Time-sysu/gzlab_ppt_skills/templates/review_report.schema.json",
+  "title": "review_report.json — 广州实验室PPT审查专家结构化问题单",
+  "description": "Structured output of the GZLab PPT review expert (workflows/gzlab-quality-gate.md). One file per review round at <project>/review/review_report_r<N>.json.",
+  "type": "object",
+  "required": ["version", "round", "quality_mode", "scores", "total_score", "issues", "verdict"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "round": { "type": "integer", "minimum": 1, "maximum": 2 },
+    "quality_mode": { "type": "string", "enum": ["draft", "standard", "final"] },
+    "reviewer_context": {
+      "type": "string",
+      "description": "审查上下文标识（独立上下文/模型标识），用于降低生成者-审查者同源偏差"
+    },
+    "scores": {
+      "type": "object",
+      "required": ["content_focus", "argument_logic", "gzlab_authenticity", "visual_focus", "readability_layout", "technical_compliance"],
+      "additionalProperties": false,
+      "properties": {
+        "content_focus": { "$ref": "#/definitions/score" },
+        "argument_logic": { "$ref": "#/definitions/score" },
+        "gzlab_authenticity": { "$ref": "#/definitions/score" },
+        "visual_focus": { "$ref": "#/definitions/score" },
+        "readability_layout": { "$ref": "#/definitions/score" },
+        "technical_compliance": { "$ref": "#/definitions/score" }
+      }
+    },
+    "total_score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "issues": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/issue" }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "revise", "escalate_human"],
+      "description": "pass=通过导出；revise=定向退回修改；escalate_human=事实/权限/敏感信息不确定，转人工"
+    },
+    "convergence": {
+      "type": "object",
+      "description": "收敛判定（final 模式第二轮必填）",
+      "properties": {
+        "critical_zero": { "type": "boolean" },
+        "major_zero_or_waived": { "type": "boolean" },
+        "score_ge_85": { "type": "boolean" },
+        "no_new_technical_errors": { "type": "boolean" },
+        "improvement_stalled": { "type": "boolean" }
+      }
+    }
+  },
+  "definitions": {
+    "score": {
+      "type": "object",
+      "required": ["score", "max"],
+      "properties": {
+        "score": { "type": "number", "minimum": 0 },
+        "max": { "type": "number", "const": 100 },
+        "comment": { "type": "string" }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "required": ["page_id", "severity", "type", "description", "action", "route_to"],
+      "additionalProperties": false,
+      "properties": {
+        "page_id": { "type": "string", "description": "如 P04；全deck问题用 ALL" },
+        "severity": { "type": "string", "enum": ["critical", "major", "minor"] },
+        "type": {
+          "type": "string",
+          "enum": [
+            "content_overload",
+            "unclear_takeaway",
+            "logic_break",
+            "missing_real_asset",
+            "misused_asset",
+            "visual_hierarchy",
+            "layout_whitespace",
+            "technical_error",
+            "fact_permission_uncertain"
+          ]
+        },
+        "description": { "type": "string", "minLength": 5 },
+        "action": { "type": "string", "minLength": 3, "description": "具体修改动作，不接受笼统意见" },
+        "route_to": {
+          "type": "string",
+          "enum": ["Strategist", "Executor", "知识库检索", "质量检查器", "人工"],
+          "description": "定向退回模块，见 gzlab-quality-gate.md 路由表"
+        }
+      }
+    }
+  }
+}

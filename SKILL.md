@@ -87,6 +87,7 @@ For complete tool documentation, see `${SKILL_DIR}/scripts/README.md`.
 | `customize-animations` | `workflows/customize-animations.md` | Object-level PPTX animation customization — run only when the user explicitly asks to tune animation order/effects/timing |
 | `live-preview` | `workflows/live-preview.md` | Browser-based live preview — auto-started during generation and re-enterable any time the user mentions "live preview", "preview", "看效果", or wants to click/select a slide element |
 | `visual-review` | `workflows/visual-review.md` | Per-page rubric-based visual self-check — run only when the user explicitly asks for a visual re-pass on the generated SVGs (between Executor and post-processing). Opt-in only; never invoked by the main pipeline. |
+| `gzlab-quality-gate` | `workflows/gzlab-quality-gate.md` | GZLab expert review gate between Executor and export — pipeline-mandatory by `quality_mode` (draft / standard / final), structured issue list with routed page-scoped fixes |
 
 ---
 
@@ -377,7 +378,7 @@ python3 ${SKILL_DIR}/scripts/analyze_images.py <project_path>/images
 **Output**:
 - `<project_path>/design_spec.md` — human-readable design narrative
 - `<project_path>/spec_lock.md` — machine-readable execution contract (skeleton: `templates/spec_lock_reference.md`); Executor re-reads before every page
-- `<project_path>/slide_briefs.json` — **mandatory** page-level content contract (schema: `templates/slide_briefs.schema.json`; rules: [`references/gzlab-content-rules.md`](references/gzlab-content-rules.md)). One page = one question = one takeaway = ≤3 supporting points = one primary visual. `rhythm` must match `spec_lock.md page_rhythm`; pages needing real GZLab evidence set `needs_real_asset: true` with an `asset_query`.
+- `<project_path>/slide_briefs.json` — **mandatory** page-level content contract (schema: `templates/slide_briefs.schema.json`; rules: [`references/gzlab-content-rules.md`](references/gzlab-content-rules.md)). One page = one question = one takeaway = ≤3 supporting points = one primary visual. `rhythm` must match `spec_lock.md page_rhythm`; pages needing real GZLab evidence set `needs_real_asset: true` with an `asset_query`. Set `quality_mode` from user intent — `draft` (quick internal discussion), `standard` (default, routine reports), `final` (project applications / formal defenses).
 
 **Content-focus Gate A (Mandatory)** — after writing the three deliverables, BEFORE proceeding:
 ```bash
@@ -518,6 +519,8 @@ python3 ${SKILL_DIR}/scripts/check_slide_focus.py <project_path> --svg
 ```
 
 > **Chart pages?** If this deck contains data charts (bar / line / pie / radar / etc.), run the standalone [`verify-charts`](workflows/verify-charts.md) workflow before Step 7 to calibrate coordinates. AI models routinely introduce 10–50 px errors when mapping data to pixel positions; verify-charts eliminates that class of error. Skip if no chart pages.
+
+**GZLab Quality Gate (Mandatory by quality_mode)** — before Step 7, run [`workflows/gzlab-quality-gate.md`](workflows/gzlab-quality-gate.md): `draft` mode proceeds directly; `standard` runs 1 expert review round; `final` runs up to 2. The reviewer produces a structured issue list (`review/review_report_r<N>.json` per `templates/review_report.schema.json`); fixes are routed page-scoped (Strategist / 知识库检索 / Executor / 质量检查器 / 人工) and MUST NOT regenerate the whole deck. Export requires critical = 0, major = 0 or human-waived, and total score ≥ 85.
 
 > **Visual self-check (opt-in)?** If the user explicitly asked for a per-page visual re-pass on the SVGs ("跑一下视觉自检 / 视觉回看", "visual review", "check pages visually", etc.), run the standalone [`visual-review`](workflows/visual-review.md) workflow before Step 7. Do NOT run it by default and do NOT recommend it based on inferred model capability or deck size — trigger is user request only.
 
