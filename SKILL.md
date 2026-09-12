@@ -59,6 +59,7 @@ description: >
 | `${SKILL_DIR}/scripts/finalize_svg.py` | SVG post-processing (unified entry) |
 | `${SKILL_DIR}/scripts/svg_to_pptx.py` | Export to PPTX |
 | `${SKILL_DIR}/scripts/update_spec.py` | Propagate a `spec_lock.md` color / font_family change across all generated SVGs |
+| `${SKILL_DIR}/scripts/check_slide_focus.py` | GZLab page-focus check — Gate A validates `slide_briefs.json`, Gate B measures generated pages against rhythm budgets |
 
 For complete tool documentation, see `${SKILL_DIR}/scripts/README.md`.
 
@@ -376,6 +377,13 @@ python3 ${SKILL_DIR}/scripts/analyze_images.py <project_path>/images
 **Output**:
 - `<project_path>/design_spec.md` — human-readable design narrative
 - `<project_path>/spec_lock.md` — machine-readable execution contract (skeleton: `templates/spec_lock_reference.md`); Executor re-reads before every page
+- `<project_path>/slide_briefs.json` — **mandatory** page-level content contract (schema: `templates/slide_briefs.schema.json`; rules: [`references/gzlab-content-rules.md`](references/gzlab-content-rules.md)). One page = one question = one takeaway = ≤3 supporting points = one primary visual. `rhythm` must match `spec_lock.md page_rhythm`; pages needing real GZLab evidence set `needs_real_asset: true` with an `asset_query`.
+
+**Content-focus Gate A (Mandatory)** — after writing the three deliverables, BEFORE proceeding:
+```bash
+python3 ${SKILL_DIR}/scripts/check_slide_focus.py <project_path> --briefs
+```
+Any `E`-level finding (missing takeaway, >3 points, missing asset query, page-id gaps, etc.) MUST be fixed by revising the briefs — return to the outline, delete secondary content or split pages. Never resolve overfull pages by shrinking fonts. `W` findings are reviewed but non-blocking.
 
 **✅ Checkpoint — Phase deliverables complete, auto-proceed to next step**:
 ```markdown
@@ -385,6 +393,7 @@ python3 ${SKILL_DIR}/scripts/analyze_images.py <project_path>/images
 - [x] Spec-refinement opt-in line appended (default OFF; only the user's explicit request enters the refine-spec workflow)
 - [x] Design Specification & Content Outline generated
 - [x] Execution lock (spec_lock.md) generated
+- [x] slide_briefs.json generated; check_slide_focus.py --briefs passed (0 errors)
 - [ ] **Next**: Auto-proceed to [Image_Generator / Executor] phase
 ```
 
@@ -474,6 +483,8 @@ python3 ${SKILL_DIR}/scripts/svg_editor/server.py <project_path> --live
 
 **Per-page spec_lock re-read (Mandatory)**: before **each** SVG page, `read_file <project_path>/spec_lock.md` and use only its colors / fonts / icons / images, plus the per-page `page_rhythm` / `page_layouts` / `page_charts` lookups (resolves to template SVGs already loaded in the batch read above). Resists context-compression drift on long decks. See executor-base.md §2.1.
 
+**Per-page brief lookup (Mandatory)**: the same page's entry in `<project_path>/slide_briefs.json` bounds the content — only its `takeaway` as the conclusion, only its `supporting_evidence` as body points (≤3), only its `primary_visual` as the visual focus. Executor MUST NOT invent extra body points or extra equal-weight visuals beyond the brief; extra detail belongs to speaker notes.
+
 > ⚠️ **Main-agent only**: SVG generation MUST stay in the current main agent — page design depends on full upstream context. Do NOT delegate to sub-agents.
 > ⚠️ **Generation rhythm**: generate pages sequentially, one at a time, in the same continuous context. Do NOT batch (e.g., 5 per group).
 
@@ -487,6 +498,13 @@ python3 ${SKILL_DIR}/scripts/svg_quality_checker.py <project_path>
 - `warning` entries (low-res image, non-PPT-safe font tail, etc.): fix when straightforward, otherwise acknowledge and release.
 - Run against `svg_output/` (not after `finalize_svg.py` — finalize rewrites SVG and masks violations).
 
+**Content-focus Gate B (Mandatory)** — immediately after the technical check:
+```bash
+python3 ${SKILL_DIR}/scripts/check_slide_focus.py <project_path> --svg
+```
+- Measures each page against its `slide_briefs.json` rhythm budget, card-wall and visual-focus rules (`references/gzlab-content-rules.md`).
+- `E` findings route by cause: text overflow → Strategist (revise the brief / split the page); layout composition → Executor (regenerate only that page); missing real-asset provenance → knowledge-base retrieval. Regenerate ONLY the affected pages, never the whole deck.
+
 **Logic Construction Phase**: generate speaker notes → `<project_path>/notes/total.md`
 
 **✅ Checkpoint — Confirm all SVGs and notes are fully generated and quality-checked. Proceed directly to Step 7 post-processing**:
@@ -495,6 +513,7 @@ python3 ${SKILL_DIR}/scripts/svg_quality_checker.py <project_path>
 - [x] Live preview started and kept available at the reported URL
 - [x] All SVGs generated to svg_output/
 - [x] svg_quality_checker.py passed (0 errors)
+- [x] check_slide_focus.py --svg passed (0 errors)
 - [x] Speaker notes generated at notes/total.md
 ```
 
@@ -602,6 +621,7 @@ Before switching roles, **MUST first read** the corresponding reference file. Ou
 | Resource | Path |
 |----------|------|
 | Shared technical constraints | `references/shared-standards.md` |
+| GZLab content focus rules (one page / one takeaway / ≤3 points / one visual) | `references/gzlab-content-rules.md` |
 | Canvas format specification | `references/canvas-formats.md` |
 | Image-text layout patterns (Primary structures + Modifier layers — combine freely) | `references/image-layout-patterns.md` |
 | Image layout sizing (math for side-by-side container dimensions) | `references/image-layout-spec.md` |

@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Time-sysu/gzlab_ppt_skills/templates/slide_briefs.schema.json",
+  "title": "slide_briefs.json — 页面级内容契约",
+  "description": "Guangzhou Laboratory page-level content contract. Strategist writes this BEFORE any SVG generation to lock each page's single takeaway, evidence budget, visual focus and asset query. Consumed by scripts/check_slide_focus.py and the gzlab quality gate.",
+  "type": "object",
+  "required": ["version", "deck_language", "pages"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "deck_language": { "type": "string", "enum": ["zh", "en"] },
+    "quality_mode": {
+      "type": "string",
+      "enum": ["draft", "standard", "final"],
+      "default": "standard",
+      "description": "草稿=draft 只跑技术检查；标准=standard 1轮专家审查；最终=final 最多2轮专家审查"
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/page_brief" }
+    }
+  },
+  "definitions": {
+    "page_brief": {
+      "type": "object",
+      "required": [
+        "page_id",
+        "page_question",
+        "takeaway",
+        "supporting_evidence",
+        "rhythm",
+        "max_points",
+        "max_primary_visuals",
+        "needs_real_asset"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "page_id": {
+          "type": "string",
+          "pattern": "^P[0-9]{2}$",
+          "description": "与 svg_output 页码一致，如 P04"
+        },
+        "page_type": {
+          "type": "string",
+          "enum": ["cover", "toc", "chapter", "content", "ending"],
+          "default": "content"
+        },
+        "page_question": {
+          "type": "string",
+          "minLength": 4,
+          "description": "本页唯一要回答的问题；一页只回答一个问题"
+        },
+        "takeaway": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 120,
+          "description": "本页唯一核心结论；标题优先使用结论式标题而不是栏目标题"
+        },
+        "supporting_evidence": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "maxItems": 3,
+          "description": "主要支持点，最多3个；次要细节进演讲者备注或附录"
+        },
+        "primary_visual": {
+          "type": "string",
+          "description": "本页唯一主要视觉焦点的描述；空字符串表示纯文字页"
+        },
+        "needs_real_asset": {
+          "type": "boolean",
+          "description": "是否需要广州实验室真实素材（仪器照片/实验场景/关键帧）；true 时必须给出 asset_query"
+        },
+        "asset_query": {
+          "type": "string",
+          "description": "知识库素材检索式（自然语言）；needs_real_asset=true 时必填"
+        },
+        "asset_filters": {
+          "type": "object",
+          "description": "可选结构化筛选条件，键名使用乐享自定义属性名",
+          "additionalProperties": { "type": "array", "items": { "type": "string" } }
+        },
+        "max_points": { "type": "integer", "const": 3 },
+        "max_primary_visuals": { "type": "integer", "const": 1 },
+        "rhythm": {
+          "type": "string",
+          "enum": ["anchor", "dense", "breathing"],
+          "description": "anchor/breathing 用于核心观点、实景照片和大数字；dense 仅用于技术架构、指标对比、验证结果"
+        },
+        "notes_hint": {
+          "type": "string",
+          "description": "应下沉到演讲者备注的次要细节（不进入页面正文）"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "needs_real_asset": { "const": true } } },
+          "then": { "required": ["asset_query", "primary_visual"] }
+        }
+      ]
+    }
+  }
+}
