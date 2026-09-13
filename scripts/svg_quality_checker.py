@@ -777,8 +777,11 @@ class SVGQualityChecker:
         font_drifts = set()
         # Capture to the matching delimiter (group 1) so a double-quoted stack
         # containing single-quoted family names is not truncated at the inner quote.
+        # Unescape XML entities (&quot; &amp; &apos; &lt; &gt;) before comparing —
+        # SVG attributes legitimately encode quotes as &quot;, which otherwise
+        # false-positives every drift comparison against the lock.
         for m in re.finditer(r'font-family\s*=\s*(["\'])(.*?)\1', content):
-            val = m.group(2).strip()
+            val = html.unescape(m.group(2)).strip()
             if allowed_fonts and self._normalize_font_stack(val) not in allowed_fonts:
                 font_drifts.add(val)
 
